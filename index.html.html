@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XFiveCommunity - Anggota Tim</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            min-height: 100vh;
+        }
+
+        /* Container untuk efek 3D perspective */
+        .profile-card-container {
+            perspective: 1200px;
+            height: 450px;
+            position: relative; 
+        }
+
+        /* Wrapper dalam yang akan berputar */
+        .profile-card-inner {
+            position: absolute;
+            inset: 0; 
+            transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform-style: preserve-3d;
+        }
+
+        /* Terapkan class ini untuk memutar kartu */
+        .profile-card-container.is-flipped .profile-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Gaya umum untuk sisi depan dan belakang */
+        .profile-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+            border-radius: 1rem; /* 16px */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateZ(0);
+        }
+
+        .profile-card-front {
+            background-size: cover;
+            background-position: center;
+            color: white;
+            justify-content: flex-end; /* Mendorong konten ke bawah */
+        }
+
+        /* Lapisan gradien untuk keterbacaan teks */
+        .profile-card-front::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 20%, rgba(0, 0, 0, 0.1) 60%);
+            z-index: 1;
+        }
+
+        .profile-card-front > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(45deg, #1e293b, #0f172a);
+            padding: 1.5rem; /* 24px */
+            justify-content: space-between; 
+        }
+        
+        .ghost-btn {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .ghost-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <!-- Header dengan Tombol Filter dan Pencarian -->
+    <header class="sticky top-0 bg-black/30 backdrop-blur-lg border-b border-white/10 z-20">
+        <nav class="container mx-auto px-6 py-4 flex flex-col gap-4">
+            <!-- Logo dan Pencarian (baris atas) -->
+            <div class="flex flex-col sm:flex-row justify-between items-center w-full gap-4">
+                <h1 class="text-xl sm:text-2xl font-bold text-white tracking-wider">XFiveCommunity</h1>
+                <div class="relative w-full sm:w-64">
+                    <input type="text" id="searchInput" placeholder="Cari anggota..." class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+            
+            <!-- Tombol Filter (baris bawah) -->
+            <div class="flex items-center space-x-2 flex-wrap justify-center sm:justify-start gap-2">
+                <button data-category="all" class="filter-btn px-4 py-2 bg-sky-500/80 hover:bg-sky-500 text-white rounded-lg text-sm font-medium transition-all">All</button>
+                <button data-category="male" class="filter-btn px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Male</button>
+                <button data-category="female" class="filter-btn px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Female</button>
+                <button data-category="dewan staff" class="filter-btn px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Dewan Staff</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-16">
+        <div id="profile-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Kartu profil 3D akan dimasukkan di sini oleh JavaScript -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 mt-8">
+        <p class="text-gray-500 text-sm">&copy; 2025 XFiveCommunity. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Data anggota dengan tambahan properti 'gender' dan 'category'
+        const members = [
+            // Data Dewan Community 
+            { name: 'Ramsky', title: 'Owner Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/Ramsky.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/Ramsky.jpeg', nickname: '-RamsX5', domisili: 'Bogor', dob: '7 Juni', gender: '-', category: 'dewan staff' },
+            { name: 'Fadhel', title: 'Leader Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/1da1eafb-8bc8-48a9-9869-26b83113e0f6.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/1da1eafb-8bc8-48a9-9869-26b83113e0f6.jpeg', nickname: '-FaskyX5', domisili: 'Medan', dob: '08 Agustus', gender: '-', category: 'dewan staff' },
+            { name: 'Joko', title: 'VLeader Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/Josky-2.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/Josky7a10451c66db8ef2.jpeg', nickname: '-JoskyX5', domisili: 'Tangerang', dob: '15 May', gender: '-', category: 'dewan staff' },
+            { name: 'Reynaldy', title: 'Staff Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/Reynaldy.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/Reynaldy.jpeg', nickname: 'ReyGod666-X5', domisili: 'Medan', dob: '18 Desember', gender: '-', category: 'dewan staff' },
+            { name: 'Thomas', title: 'Staff Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/Thomas.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/Thomas.jpeg', nickname: 'LczAxyedra-X5', domisili: 'Medan', dob: '29 Oktober', gender: '-', category: 'dewan staff' },
+            { name: 'Fikri', title: 'Staff Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/Fikri15021c15d4e2b9aa.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/Fikri15021c15d4e2b9aa.jpeg', nickname: 'Rotschild-X5', domisili: 'Medan', dob: '7 April', gender: '-', category: 'dewan staff' },
+            { name: 'Meylisa', title: 'Staff Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/ka-mey.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/ka-mey.jpeg', nickname: 'MemeyX5-', domisili: 'Bali', dob: '1 May', gender: '-', category: 'dewan staff' },
+            { name: 'Citra', title: 'Staff Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/citratt2.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/citratt2.jpeg', nickname: 'LuvsssX5-rl', domisili: 'Medan', dob: '5 November', gender: '-', category: 'dewan staff' },
+            { name: 'Fajar', title: 'Staff Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/fajar.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/fajar.jpeg', nickname: '-JarssX5', domisili: 'Bali', dob: '14 Januari', gender: '-', category: 'dewan staff' },
+            { name: 'Vandhu', title: 'Staff Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/vandhu.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/vandhu.jpeg', nickname: 'dxScelnitX5-FLz', domisili: 'Riau', dob: '05 Oktober', gender: '-', category: 'dewan staff' },
+            { name: 'Ardiansyah', title: 'Staff Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/ardiansyah.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/ardiansyah.jpeg', nickname: 'nyxWONGzX5-', domisili: 'Purwokerto', dob: '15 Juni', gender: '-', category: 'dewan staff' },
+            { name: 'Zarah', title: 'Staff Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/Zarah2.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/Zarah2.jpeg', nickname: 'gdCannaX5-Fz', domisili: 'Manado', dob: '01 Desember', gender: '-', category: 'dewan staff' },
+            { name: 'Wale', title: 'Staff Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/wale.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/wale.jpeg', nickname: 'NIKA-X5', domisili: 'Medan', dob: '08 Maret', gender: '-', category: 'dewan staff' },
+            // Data anggota female 
+            { name: 'Veronika', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/veronica.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/veronica.jpeg', nickname: 'SchatzieMuse-X5', domisili: 'Pontianak', dob: '12 Juni', gender: 'female', category: 'member' },
+            { name: 'Aini', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/aini4.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/aini-3.jpeg', nickname: 'ImAvriellX5', domisili: 'Pontianak', dob: '28 Juni', gender: 'female', category: 'member' },
+            { name: 'Nisa', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/nisa2f7df697f5c968b0.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/nisa2f7df697f5c968b0.jpeg', nickname: 'Qiaraa-X5', domisili: 'Jakarta', dob: '14 Agustus', gender: 'female', category: 'member' },
+            { name: 'Zura', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/zura.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/zura.jpeg', nickname: '-zuraX5', domisili: 'Aceh', dob: '28 September', gender: 'female', category: 'member' },
+            { name: 'Shinta', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/shinta.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/shinta2.jpeg', nickname: 'nyxShinX5-', domisili: 'Jakarta', dob: '26 Desember', gender: 'female', category: 'member' },
+            { name: 'Ira', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/shinta2.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/Ira.jpeg', nickname: 'ValkyrieX5', domisili: 'Manado', dob: '26 Desember', gender: 'female', category: 'member' },
+            { name: 'Vania', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/vania.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/vania.jpeg', nickname: 'yuiMisora-X5', domisili: 'Batam', dob: '9 July', gender: 'female', category: 'member' },
+            { name: 'Ussy', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/ussy.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/ussy.jpeg', nickname: 'FTrustX5', domisili: 'Tangerang', dob: '3 September', gender: 'female', category: 'member' },
+            { name: 'Diah', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/diah.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/diah.jpeg', nickname: 'ImperfectX5', domisili: 'Jakarta', dob: '9 November', gender: 'female', category: 'member' },
+            { name: 'Dini', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/dini.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/dini.jpeg', nickname: 'VeroX5', domisili: 'Bandung', dob: '6 Januari', gender: 'female', category: 'member' },
+            { name: 'Ghea', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/ghea.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/ghea.jpeg', nickname: 'Cywizee-X5', domisili: 'Jakarta Timur', dob: '31 Oktober', gender: 'female', category: 'member' },
+            { name: 'Tyas', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/tyas.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/tyas.jpeg', nickname: 'yasX5', domisili: 'Jakarta', dob: '1 September', gender: 'female', category: 'member' },
+            // Data anggota male
+            { name: 'Pari', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/parii2.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/parii2.jpeg', nickname: 'vypayiX5', domisili: 'Bogor', dob: '12 November', gender: 'male', category: 'member' },
+            { name: 'Kenneth', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/kenth.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/kenth.jpeg', nickname: 'keniaX5', domisili: 'Bekasi', dob: '22 Februari', gender: 'male', category: 'member' },
+            { name: 'Adit', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/Trueno.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/Trueno.jpeg', nickname: 'Trueno182-X5', domisili: 'Bogor', dob: '15 February', gender: 'male', category: 'member' },
+            { name: 'Made', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/Hoshi.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/Hoshi.jpeg', nickname: '--HoshiX5', domisili: 'Bali', dob: '20 September', gender: 'male', category: 'member' },
+            { name: 'Ghaffar', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/Ghaffar.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/Ghaffar.jpeg', nickname: 'TjxyfarX5-', domisili: 'Tangerang', dob: '2 Agustus', gender: 'male', category: 'member' },
+            { name: 'Panji', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/Panji.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/Panji.jpeg', nickname: 'PanjiX5', domisili: 'Semarang', dob: '27 Juli', gender: 'male', category: 'member' },
+            { name: 'Adit', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/adit33.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/adit33.jpeg', nickname: '-aditX5-BTR', domisili: 'Kalteng', dob: '21 Mei', gender: 'male', category: 'member' },
+            { name: 'Yoga', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/yoga.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/yoga.jpeg', nickname: 'MzScaar-X5', domisili: 'Jambi', dob: '25 Juli', gender: 'male', category: 'member' },
+            { name: 'Rizky wicaksono', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/Rizky-241.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/Rizky-241.jpeg', nickname: 'TroilusX5', domisili: 'Jakarta', dob: '19 Oktober', gender: 'male', category: 'member' },
+        ];
+        
+        let currentCategory = 'all'; // Menyimpan kategori yang sedang aktif
+        const profileGrid = document.getElementById('profile-grid');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const searchInput = document.getElementById('searchInput');
+
+        // Fungsi untuk membuat dan menampilkan kartu profil
+        const renderProfileCards = (filteredMembers) => {
+            profileGrid.innerHTML = ''; // Hapus kartu yang ada
+            
+            if (filteredMembers.length === 0) {
+                profileGrid.innerHTML = '<p class="text-center col-span-full text-gray-500 text-lg">Tidak ada anggota yang ditemukan.</p>';
+            }
+
+            filteredMembers.forEach((member) => {
+                const cardContainer = document.createElement('div');
+                cardContainer.className = 'profile-card-container';
+                
+                const cardInner = document.createElement('div');
+                cardInner.className = 'profile-card-inner';
+
+                // Tentukan ikon dan teks jenis kelamin
+                const genderIcon = member.gender === 'male' ? '<i class="fas fa-mars text-blue-400"></i>' : (member.gender === 'female' ? '<i class="fas fa-venus text-pink-400"></i>' : '');
+                const genderText = member.gender === 'male' ? 'Male' : (member.gender === 'female' ? 'Female' : '-');
+                
+                // SISI DEPAN KARTU
+                const cardFront = document.createElement('div');
+                cardFront.className = 'profile-card-face profile-card-front';
+                cardFront.style.backgroundImage = `url('${member.bgImage}')`;
+                cardFront.innerHTML = `
+                    <div class="p-6 w-full">
+                        <h2 class="text-3xl font-bold">${member.name}</h2>
+                        <p class="text-lg text-gray-300">${member.title}</p>
+                        <button class="flip-btn ghost-btn w-full sm:w-auto mt-4 py-2 px-6 rounded-full text-sm font-semibold">
+                            Lihat Detail
+                        </button>
+                    </div>
+                `;
+
+                // SISI BELAKANG KARTU (dengan info gender)
+                const cardBack = document.createElement('div');
+                cardBack.className = 'profile-card-face profile-card-back';
+                cardBack.innerHTML = `
+                    <div class="text-center">
+                        <img class="w-24 h-24 rounded-full object-cover border-4 border-sky-500/50 mx-auto" src="${member.avatar}" alt="Avatar ${member.name}">
+                        <h2 class="text-2xl font-bold text-white mt-3">${member.name}</h2>
+                        <p class="text-sky-400 font-medium">${member.title}</p>
+                    </div>
+                    <div class="text-left mt-4 border-t border-white/10 pt-4 space-y-3 self-stretch">
+                        <div class="flex items-center"><i class="fas fa-user-circle fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2">Nickname:</span><span>${member.nickname}</span></div>
+                        <div class="flex items-center"><i class="fas fa-map-marker-alt fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2">Domisili:</span><span>${member.domisili}</span></div>
+                        <div class="flex items-center"><i class="fas fa-calendar-alt fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2">Tanggal Lahir:</span><span>${member.dob}</span></div>
+                        <div class="flex items-center"><span class="font-semibold mr-2 w-6">${genderIcon}</span><span class="font-semibold mr-2">Jenis Kelamin:</span><span>${genderText}</span></div>
+                    </div>
+                    <button class="flip-btn w-full bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Kembali</span>
+                    </button>
+                `;
+                
+                cardInner.appendChild(cardFront);
+                cardInner.appendChild(cardBack);
+                cardContainer.appendChild(cardInner);
+                profileGrid.appendChild(cardContainer);
+            });
+            addEventListeners(); // Tambahkan event listener setelah semua kartu dibuat
+        };
+
+        // Fungsi untuk menangani filter dan pencarian
+        const updateCards = () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            let filteredMembers = [];
+            
+            // Tentukan data berdasarkan kategori aktif
+            let membersToFilter = members;
+            if (currentCategory !== 'all') {
+                if (currentCategory === 'dewan staff') {
+                    membersToFilter = members.filter(member => member.category === 'dewan staff');
+                } else {
+                    membersToFilter = members.filter(member => member.gender === currentCategory);
+                }
+            }
+
+            // Lakukan pencarian pada data yang sudah difilter
+            if (searchTerm === '') {
+                filteredMembers = membersToFilter;
+            } else {
+                filteredMembers = membersToFilter.filter(member => 
+                    member.name.toLowerCase().includes(searchTerm) ||
+                    member.nickname.toLowerCase().includes(searchTerm) ||
+                    member.domisili.toLowerCase().includes(searchTerm) ||
+                    member.title.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            renderProfileCards(filteredMembers);
+        };
+
+        // Fungsi untuk menangani klik filter
+        const handleFilterClick = (category) => {
+            currentCategory = category;
+            filterButtons.forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.classList.remove('hover:bg-white/10', 'text-gray-200');
+                    btn.classList.add('bg-sky-500/80', 'text-white');
+                } else {
+                    btn.classList.remove('bg-sky-500/80', 'text-white');
+                    btn.classList.add('hover:bg-white/10', 'text-gray-200');
+                }
+            });
+            updateCards();
+        };
+
+        // Fungsi untuk menambahkan event listener pada tombol balik kartu
+        const addEventListeners = () => {
+            document.querySelectorAll('.flip-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    const cardContainer = button.closest('.profile-card-container');
+                    cardContainer.classList.toggle('is-flipped');
+                });
+            });
+        };
+
+        // Tambahkan event listener untuk tombol filter
+        filterButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const category = e.currentTarget.dataset.category;
+                handleFilterClick(category);
+            });
+        });
+        
+        // Tambahkan event listener untuk input pencarian
+        searchInput.addEventListener('keyup', updateCards);
+
+        // Panggil saat halaman dimuat untuk menampilkan semua anggota
+        document.addEventListener('DOMContentLoaded', () => {
+            handleFilterClick('all'); // Tampilkan semua secara default
+        });
+    </script>
+</body>
+</html>

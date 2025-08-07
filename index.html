@@ -8,219 +8,64 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts: Orbitron (font cyberpunk) -->
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome untuk Ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root {
-            --neon-blue: #0ff;
-            --neon-pink: #f0f;
-            --neon-purple: #a0f;
-            --dark-bg: #0a0a12;
-        }
-        
         body {
-            font-family: 'Exo 2', sans-serif;
-            background-color: var(--dark-bg);
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
             min-height: 100vh;
-            color: #e0e0ff;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(16, 16, 40, 0.8) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(64, 0, 96, 0.6) 0%, transparent 20%),
-                linear-gradient(to bottom, #0a0a12, #050510);
-            position: relative;
-            overflow-x: hidden;
         }
-        
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                linear-gradient(rgba(10, 10, 18, 0.9), rgba(10, 10, 18, 0.9)),
-                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23555' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: -1;
-        }
-        
-        .cyberpunk-font {
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px rgba(0, 255, 255, 0.5);
-        }
-        
-        .neon-text {
-            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px rgba(0, 255, 255, 0.5);
-        }
-        
-        .neon-border {
-            box-shadow: 0 0 5px var(--neon-blue), 0 0 10px rgba(0, 255, 255, 0.3), inset 0 0 5px var(--neon-blue);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-        }
-        
-        .neon-pink-border {
-            box-shadow: 0 0 5px var(--neon-pink), 0 0 10px rgba(255, 0, 255, 0.3), inset 0 0 5px var(--neon-pink);
-            border: 1px solid rgba(255, 0, 255, 0.3);
-        }
-        
-        .neon-purple-border {
-            box-shadow: 0 0 5px var(--neon-purple), 0 0 10px rgba(160, 0, 255, 0.3), inset 0 0 5px var(--neon-purple);
-            border: 1px solid rgba(160, 0, 255, 0.3);
-        }
-        
-        .glitch-effect {
-            position: relative;
-        }
-        
-        .glitch-effect::before, .glitch-effect::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .glitch-effect::before {
-            left: 2px;
-            text-shadow: -1px 0 rgba(255, 0, 0, 0.7);
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 5s infinite linear alternate-reverse;
-        }
-        
-        .glitch-effect::after {
-            left: -2px;
-            text-shadow: -1px 0 rgba(0, 0, 255, 0.7);
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim2 5s infinite linear alternate-reverse;
-        }
-        
-        @keyframes glitch-anim {
-            0% { clip: rect(61px, 9999px, 52px, 0); }
-            5% { clip: rect(33px, 9999px, 14px, 0); }
-            10% { clip: rect(121px, 9999px, 115px, 0); }
-            15% { clip: rect(144px, 9999px, 162px, 0); }
-            20% { clip: rect(109px, 9999px, 146px, 0); }
-            25% { clip: rect(99px, 9999px, 133px, 0); }
-            30% { clip: rect(91px, 9999px, 79px, 0); }
-            35% { clip: rect(16px, 9999px, 165px, 0); }
-            40% { clip: rect(156px, 9999px, 88px, 0); }
-            45% { clip: rect(63px, 9999px, 52px, 0); }
-            50% { clip: rect(161px, 9999px, 122px, 0); }
-            55% { clip: rect(157px, 9999px, 149px, 0); }
-            60% { clip: rect(59px, 9999px, 102px, 0); }
-            65% { clip: rect(101px, 9999px, 74px, 0); }
-            70% { clip: rect(10px, 9999px, 105px, 0); }
-            75% { clip: rect(133px, 9999px, 58px, 0); }
-            80% { clip: rect(128px, 9999px, 160px, 0); }
-            85% { clip: rect(109px, 9999px, 83px, 0); }
-            90% { clip: rect(57px, 9999px, 129px, 0); }
-            95% { clip: rect(37px, 9999px, 152px, 0); }
-            100% { clip: rect(145px, 9999px, 43px, 0); }
-        }
-        
-        @keyframes glitch-anim2 {
-            0% { clip: rect(65px, 9999px, 119px, 0); }
-            5% { clip: rect(52px, 9999px, 78px, 0); }
-            10% { clip: rect(115px, 9999px, 137px, 0); }
-            15% { clip: rect(113px, 9999px, 61px, 0); }
-            20% { clip: rect(130px, 9999px, 169px, 0); }
-            25% { clip: rect(71px, 9999px, 103px, 0); }
-            30% { clip: rect(84px, 9999px, 40px, 0); }
-            35% { clip: rect(167px, 9999px, 58px, 0); }
-            40% { clip: rect(153px, 9999px, 131px, 0); }
-            45% { clip: rect(161px, 9999px, 105px, 0); }
-            50% { clip: rect(34px, 9999px, 70px, 0); }
-            55% { clip: rect(136px, 9999px, 167px, 0); }
-            60% { clip: rect(102px, 9999px, 120px, 0); }
-            65% { clip: rect(149px, 9999px, 44px, 0); }
-            70% { clip: rect(99px, 9999px, 135px, 0); }
-            75% { clip: rect(118px, 9999px, 69px, 0); }
-            80% { clip: rect(97px, 9999px, 136px, 0); }
-            85% { clip: rect(114px, 9999px, 64px, 0); }
-            90% { clip: rect(146px, 9999px, 104px, 0); }
-            95% { clip: rect(121px, 9999px, 142px, 0); }
-            100% { clip: rect(151px, 9999px, 143px, 0); }
-        }
-        
-        .scan-line {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to bottom, rgba(0, 255, 255, 0.1), rgba(0, 255, 255, 0.6), rgba(0, 255, 255, 0.1));
-            z-index: 999;
-            animation: scan 4s linear infinite;
-            box-shadow: 0 0 15px 2px var(--neon-blue);
-            pointer-events: none;
-        }
-        
-        @keyframes scan {
-            0% { top: 0%; }
-            100% { top: 100%; }
-        }
-        
-        .header-glass {
-            background: rgba(10, 10, 25, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-        }
-        
+
+        /* Container untuk efek 3D perspective */
         .profile-card-container {
             perspective: 1200px;
             height: 450px;
-            position: relative;
+            position: relative; 
         }
-        
+
+        /* Wrapper dalam yang akan berputar */
         .profile-card-inner {
             position: absolute;
             inset: 0; 
             transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
             transform-style: preserve-3d;
         }
-        
+
+        /* Terapkan class ini untuk memutar kartu */
         .profile-card-container.is-flipped .profile-card-inner {
             transform: rotateY(180deg);
         }
-        
+
+        /* Gaya umum untuk sisi depan dan belakang */
         .profile-card-face {
             position: absolute;
             width: 100%;
             height: 100%;
-            -webkit-backface-visibility: hidden;
+            -webkit-backface-visibility: hidden; /* Safari */
             backface-visibility: hidden;
-            border-radius: 0.5rem;
+            border-radius: 1rem; /* 16px */
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             transform: translateZ(0);
-            transition: all 0.3s ease;
         }
-        
+
         .profile-card-front {
             background-size: cover;
             background-position: center;
             color: white;
-            justify-content: flex-end;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 255, 255, 0.2);
+            justify-content: flex-end; /* Mendorong konten ke bawah */
         }
-        
-        .profile-card-front:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 255, 255, 0.4), 0 0 15px rgba(0, 255, 255, 0.3);
-        }
-        
+
+        /* Lapisan gradien untuk keterbacaan teks */
         .profile-card-front::before {
             content: '';
             position: absolute;
@@ -231,19 +76,17 @@
             background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 20%, rgba(0, 0, 0, 0.1) 60%);
             z-index: 1;
         }
-        
+
         .profile-card-front > * {
             position: relative;
             z-index: 2;
         }
-        
+
         .profile-card-back {
             transform: rotateY(180deg);
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            padding: 1.5rem;
-            justify-content: space-between;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 0, 255, 0.2);
+            background: linear-gradient(45deg, #1e293b, #0f172a);
+            padding: 1.5rem; /* 24px */
+            justify-content: space-between; 
         }
         
         .ghost-btn {
@@ -252,109 +95,34 @@
             color: rgba(255, 255, 255, 0.9);
             transition: all 0.3s ease;
         }
-        
+
         .ghost-btn:hover {
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
             transform: scale(1.05);
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-        }
-        
-        .neon-btn {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            box-shadow: 0 0 5px var(--neon-blue), inset 0 0 5px var(--neon-blue);
-            transition: all 0.3s ease;
-        }
-        
-        .neon-btn:hover {
-            background: rgba(0, 255, 255, 0.1);
-            box-shadow: 0 0 15px var(--neon-blue), inset 0 0 10px var(--neon-blue);
-            transform: translateY(-2px);
-        }
-        
-        .neon-pink-btn {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--neon-pink);
-            color: var(--neon-pink);
-            box-shadow: 0 0 5px var(--neon-pink), inset 0 0 5px var(--neon-pink);
-            transition: all 0.3s ease;
-        }
-        
-        .neon-pink-btn:hover {
-            background: rgba(255, 0, 255, 0.1);
-            box-shadow: 0 0 15px var(--neon-pink), inset 0 0 10px var(--neon-pink);
-            transform: translateY(-2px);
-        }
-        
-        .neon-purple-btn {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--neon-purple);
-            color: var(--neon-purple);
-            box-shadow: 0 0 5px var(--neon-purple), inset 0 0 5px var(--neon-purple);
-            transition: all 0.3s ease;
-        }
-        
-        .neon-purple-btn:hover {
-            background: rgba(160, 0, 255, 0.1);
-            box-shadow: 0 0 15px var(--neon-purple), inset 0 0 10px var(--neon-purple);
-            transform: translateY(-2px);
-        }
-        
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .grid-pattern {
-            background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        
-        .no-results {
-            background: rgba(20, 20, 40, 0.7);
-            border: 1px solid rgba(255, 0, 255, 0.3);
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
-            border-radius: 10px;
         }
     </style>
 </head>
 <body class="text-gray-200">
-    <div class="scan-line"></div>
-    
-    <!-- Glitch efek untuk latar belakang -->
-    <div class="fixed inset-0 overflow-hidden opacity-10 pointer-events-none">
-        <div class="absolute top-0 left-0 w-full h-full bg-repeat" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'none\' stroke=\'%230ff\' stroke-width=\'0.5\' stroke-dasharray=\'2,2\'/></svg>');"></div>
-    </div>
-    
+
     <!-- Header dengan Tombol Filter dan Pencarian -->
-    <header class="sticky top-0 header-glass z-20">
+    <header class="sticky top-0 bg-black/30 backdrop-blur-lg border-b border-white/10 z-20">
         <nav class="container mx-auto px-6 py-4 flex flex-col gap-4">
             <!-- Logo dan Pencarian (baris atas) -->
             <div class="flex flex-col sm:flex-row justify-between items-center w-full gap-4">
-                <h1 class="text-2xl sm:text-3xl font-bold cyberpunk-font glitch-effect" data-text="XFiveCommunity">
-                    XFiveCommunity
-                </h1>
+                <h1 class="text-xl sm:text-2xl font-bold text-white tracking-wider">XFiveCommunity</h1>
                 <div class="relative w-full sm:w-64">
-                    <input type="text" id="searchInput" placeholder="Cari anggota..." class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-800/70 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500 neon-border">
+                    <input type="text" id="searchInput" placeholder="Cari anggota..." class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500">
                     <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
             </div>
             
             <!-- Tombol Filter (baris bawah) -->
             <div class="flex items-center space-x-2 flex-wrap justify-center sm:justify-start gap-2">
-                <button data-category="all" class="filter-btn px-4 py-2 neon-btn rounded-lg font-medium transition-all">All</button>
-                <button data-category="male" class="filter-btn px-4 py-2 neon-btn rounded-lg font-medium transition-colors">Male</button>
-                <button data-category="female" class="filter-btn px-4 py-2 neon-pink-btn rounded-lg font-medium transition-colors">Female</button>
-                <button data-category="dewan staff" class="filter-btn px-4 py-2 neon-purple-btn rounded-lg font-medium transition-colors">Dewan Staff</button>
+                <button data-category="all" class="filter-btn px-4 py-2 bg-sky-500/80 hover:bg-sky-500 text-white rounded-lg text-sm font-medium transition-all">All</button>
+                <button data-category="male" class="filter-btn px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Male</button>
+                <button data-category="female" class="filter-btn px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Female</button>
+                <button data-category="dewan staff" class="filter-btn px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Dewan Staff</button>
             </div>
         </nav>
     </header>
@@ -367,8 +135,8 @@
     </main>
 
     <!-- Footer -->
-    <footer class="text-center py-8 mt-8 border-t border-white/10">
-        <p class="text-gray-500 text-sm cyberpunk-font">&copy; 2025 XFiveCommunity. All rights reserved.</p>
+    <footer class="text-center py-8 mt-8">
+        <p class="text-gray-500 text-sm">&copy; 2025 XFiveCommunity. All rights reserved.</p>
     </footer>
 
     <script>
@@ -400,7 +168,7 @@
             { name: 'Shinta', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/shinta.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/shinta2.jpeg', nickname: 'nyxShinX5-', domisili: 'Jakarta', dob: '26 Desember', gender: 'female', category: 'member' },
             { name: 'Ira', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/Ira.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/Ira.jpeg', nickname: 'ValkyrieX5', domisili: 'Manado', dob: '26 Desember', gender: 'female', category: 'member' },
             { name: 'Echii', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/03/echii.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/03/echii.jpeg', nickname: '3Echii-X5', domisili: 'Manado', dob: '3 Oktober', gender: 'female', category: 'member' },
-            { name: 'Vania', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/vania.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/vania.jpeg', nickname: 'Linhui-X5', domisili: 'Batam', dob: '9 July', gender: 'female', category: 'member' },
+            { name: 'Vania', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/vania.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/vania.jpeg', nickname: 'yuiMisora-X5', domisili: 'Batam', dob: '9 July', gender: 'female', category: 'member' },
             { name: 'Ussy', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/ussy.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/ussy.jpeg', nickname: 'FTrustX5', domisili: 'Tangerang', dob: '3 September', gender: 'female', category: 'member' },
             { name: 'Diah', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/diah.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/diah.jpeg', nickname: 'ImperfectX5', domisili: 'Jakarta', dob: '9 November', gender: 'female', category: 'member' },
             { name: 'Lia', title: 'Member Community', avatar: 'https://www.studiointermedia.com/images/2025/08/06/Lia.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/06/Lia.jpeg', nickname: 'LizskyX5-', domisili: 'Surabaya', dob: '5 February', gender: 'female', category: 'member' },
@@ -445,18 +213,12 @@
             profileGrid.innerHTML = ''; // Hapus kartu yang ada
             
             if (filteredMembers.length === 0) {
-                profileGrid.innerHTML = `
-                    <div class="no-results col-span-full text-center p-8 animate__animated animate__fadeIn">
-                        <i class="fas fa-user-slash text-4xl text-purple-400 mb-4"></i>
-                        <h3 class="text-xl font-bold cyberpunk-font neon-text">Tidak ditemukan</h3>
-                        <p class="text-gray-400">Tidak ada anggota yang cocok dengan kriteria pencarian</p>
-                    </div>
-                `;
+                profileGrid.innerHTML = '<p class="text-center col-span-full text-gray-500 text-lg">Tidak ada anggota yang ditemukan.</p>';
             }
 
             filteredMembers.forEach((member) => {
                 const cardContainer = document.createElement('div');
-                cardContainer.className = 'profile-card-container floating';
+                cardContainer.className = 'profile-card-container';
                 
                 const cardInner = document.createElement('div');
                 cardInner.className = 'profile-card-inner';
@@ -471,30 +233,30 @@
                 cardFront.style.backgroundImage = `url('${member.bgImage}')`;
                 cardFront.innerHTML = `
                     <div class="p-6 w-full">
-                        <h2 class="text-3xl font-bold cyberpunk-font">${member.name}</h2>
-                        <p class="text-lg text-cyan-300 font-medium">${member.title}</p>
+                        <h2 class="text-3xl font-bold">${member.name}</h2>
+                        <p class="text-lg text-gray-300">${member.title}</p>
                         <button class="flip-btn ghost-btn w-full sm:w-auto mt-4 py-2 px-6 rounded-full text-sm font-semibold">
-                            <i class="fas fa-sync-alt mr-2"></i> Lihat Detail
+                            Lihat Detail
                         </button>
                     </div>
                 `;
 
                 // SISI BELAKANG KARTU (dengan info gender)
                 const cardBack = document.createElement('div');
-                cardBack.className = 'profile-card-face profile-card-back grid-pattern';
+                cardBack.className = 'profile-card-face profile-card-back';
                 cardBack.innerHTML = `
                     <div class="text-center">
-                        <img class="w-24 h-24 rounded-full object-cover border-4 border-cyan-500/50 mx-auto" src="${member.avatar}" alt="Avatar ${member.name}">
-                        <h2 class="text-2xl font-bold text-white mt-3 cyberpunk-font">${member.name}</h2>
-                        <p class="text-cyan-400 font-medium">${member.title}</p>
+                        <img class="w-24 h-24 rounded-full object-cover border-4 border-sky-500/50 mx-auto" src="${member.avatar}" alt="Avatar ${member.name}">
+                        <h2 class="text-2xl font-bold text-white mt-3">${member.name}</h2>
+                        <p class="text-sky-400 font-medium">${member.title}</p>
                     </div>
                     <div class="text-left mt-4 border-t border-white/10 pt-4 space-y-3 self-stretch">
-                        <div class="flex items-center"><i class="fas fa-user-circle fa-fw w-6 text-cyan-400"></i><span class="font-semibold mr-2">Nickname:</span><span class="neon-text">${member.nickname}</span></div>
-                        <div class="flex items-center"><i class="fas fa-map-marker-alt fa-fw w-6 text-cyan-400"></i><span class="font-semibold mr-2">Domisili:</span><span>${member.domisili}</span></div>
-                        <div class="flex items-center"><i class="fas fa-calendar-alt fa-fw w-6 text-cyan-400"></i><span class="font-semibold mr-2">Tanggal Lahir:</span><span>${member.dob}</span></div>
+                        <div class="flex items-center"><i class="fas fa-user-circle fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2">Nickname:</span><span>${member.nickname}</span></div>
+                        <div class="flex items-center"><i class="fas fa-map-marker-alt fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2">Domisili:</span><span>${member.domisili}</span></div>
+                        <div class="flex items-center"><i class="fas fa-calendar-alt fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2">Tanggal Lahir:</span><span>${member.dob}</span></div>
                         <div class="flex items-center"><span class="font-semibold mr-2 w-6">${genderIcon}</span><span class="font-semibold mr-2">Jenis Kelamin:</span><span>${genderText}</span></div>
                     </div>
-                    <button class="flip-btn w-full bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2 neon-border">
+                    <button class="flip-btn w-full bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2">
                         <i class="fas fa-arrow-left"></i>
                         <span>Kembali</span>
                     </button>
@@ -543,9 +305,11 @@
             currentCategory = category;
             filterButtons.forEach(btn => {
                 if (btn.dataset.category === category) {
+                    btn.classList.remove('hover:bg-white/10', 'text-gray-200');
                     btn.classList.add('bg-sky-500/80', 'text-white');
                 } else {
                     btn.classList.remove('bg-sky-500/80', 'text-white');
+                    btn.classList.add('hover:bg-white/10', 'text-gray-200');
                 }
             });
             updateCards();
@@ -558,13 +322,6 @@
                     e.stopPropagation(); 
                     const cardContainer = button.closest('.profile-card-container');
                     cardContainer.classList.toggle('is-flipped');
-                    
-                    // Hentikan animasi floating saat kartu dibalik
-                    if (cardContainer.classList.contains('is-flipped')) {
-                        cardContainer.classList.remove('floating');
-                    } else {
-                        cardContainer.classList.add('floating');
-                    }
                 });
             });
         };

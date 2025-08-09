@@ -12,15 +12,32 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome untuk Ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00ffff;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0d1117;
             min-height: 100vh;
+            background-image: radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.15), transparent 60%),
+                              radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.15), transparent 60%);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .neon-text {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
         }
 
         /* Container untuk efek 3D perspective */
@@ -84,22 +101,24 @@
 
         .profile-card-back {
             transform: rotateY(180deg);
-            background: linear-gradient(45deg, #1e293b, #0f172a);
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.15), rgba(0, 255, 255, 0.05));
             padding: 1.5rem; /* 24px */
-            justify-content: space-between; 
+            justify-content: space-between;
         }
         
         .ghost-btn {
             background-color: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            color: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
             transition: all 0.3s ease;
+            box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
         }
 
         .ghost-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 255, 255, 0.1);
             color: white;
             transform: scale(1.05);
+            box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
         }
     </style>
 </head>
@@ -110,16 +129,16 @@
         <nav class="container mx-auto px-6 py-4 flex flex-col gap-4">
             <!-- Logo dan Pencarian (baris atas) -->
             <div class="flex flex-col sm:flex-row justify-between items-center w-full gap-4">
-                <h1 class="text-xl sm:text-2xl font-bold text-white tracking-wider">XFiveCommunity</h1>
+                <h1 class="text-xl sm:text-2xl font-bold tracking-wider neon-text">XFiveCommunity</h1>
                 <div class="relative w-full sm:w-64">
-                    <input type="text" id="searchInput" placeholder="Cari anggota..." class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <input type="text" id="searchInput" placeholder="Cari anggota..." class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-500">
                     <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
             </div>
             
             <!-- Tombol Filter (baris bawah) -->
             <div class="flex items-center space-x-2 flex-wrap justify-center sm:justify-start gap-2">
-                <button data-category="all" class="filter-btn px-4 py-2 bg-sky-500/80 hover:bg-sky-500 text-white rounded-lg text-sm font-medium transition-all">All</button>
+                <button data-category="all" class="filter-btn px-4 py-2 bg-fuchsia-600/80 hover:bg-fuchsia-500 text-white rounded-lg text-sm font-medium transition-all">All</button>
                 <button data-category="male" class="filter-btn px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Male</button>
                 <button data-category="female" class="filter-btn px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Female</button>
                 <button data-category="dewan staff" class="filter-btn px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Dewan Staff</button>
@@ -246,9 +265,9 @@
                 cardBack.className = 'profile-card-face profile-card-back';
                 cardBack.innerHTML = `
                     <div class="text-center">
-                        <img class="w-24 h-24 rounded-full object-cover border-4 border-sky-500/50 mx-auto" src="${member.avatar}" alt="Avatar ${member.name}">
+                        <img class="w-24 h-24 rounded-full object-cover border-4 border-fuchsia-500/50 mx-auto" src="${member.avatar}" alt="Avatar ${member.name}">
                         <h2 class="text-2xl font-bold text-white mt-3">${member.name}</h2>
-                        <p class="text-sky-400 font-medium">${member.title}</p>
+                        <p class="text-fuchsia-400 font-medium">${member.title}</p>
                     </div>
                     <div class="text-left mt-4 border-t border-white/10 pt-4 space-y-3 self-stretch">
                         <div class="flex items-center"><i class="fas fa-user-circle fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2">Nickname:</span><span>${member.nickname}</span></div>
@@ -256,7 +275,7 @@
                         <div class="flex items-center"><i class="fas fa-calendar-alt fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2">Tanggal Lahir:</span><span>${member.dob}</span></div>
                         <div class="flex items-center"><span class="font-semibold mr-2 w-6">${genderIcon}</span><span class="font-semibold mr-2">Jenis Kelamin:</span><span>${genderText}</span></div>
                     </div>
-                    <button class="flip-btn w-full bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                    <button class="flip-btn w-full bg-fuchsia-600/80 hover:bg-fuchsia-500 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2">
                         <i class="fas fa-arrow-left"></i>
                         <span>Kembali</span>
                     </button>
@@ -306,9 +325,9 @@
             filterButtons.forEach(btn => {
                 if (btn.dataset.category === category) {
                     btn.classList.remove('hover:bg-white/10', 'text-gray-200');
-                    btn.classList.add('bg-sky-500/80', 'text-white');
+                    btn.classList.add('bg-fuchsia-600/80', 'text-white');
                 } else {
-                    btn.classList.remove('bg-sky-500/80', 'text-white');
+                    btn.classList.remove('bg-fuchsia-600/80', 'text-white');
                     btn.classList.add('hover:bg-white/10', 'text-gray-200');
                 }
             });

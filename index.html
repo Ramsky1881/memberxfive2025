@@ -56,14 +56,14 @@
         background: var(--cyber-bg);
         border: 2px solid var(--cyber-primary);
         box-shadow: 0 0 15px var(--cyber-primary), inset 0 0 15px var(--cyber-primary);
-        padding: 2rem;
+        padding: 1.5rem;
         margin-bottom: 2rem;
     }
     
     .cyber-title {
         color: var(--cyber-secondary);
         text-shadow: 0 0 5px var(--cyber-secondary);
-        font-size: 1.8rem;
+        font-size: 1.25rem; /* Smaller font size for mobile */
         text-transform: uppercase;
     }
     
@@ -92,13 +92,16 @@
 
     #qrcode {
         border: 4px solid var(--cyber-primary);
-        padding: 10px;
+        padding: 8px;
         background: white;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
     }
     
     #qrcode img {
-        width: 100%;
-        height: 100%;
+        width: 100% !important;
+        height: 100% !important;
     }
 
 
@@ -276,23 +279,23 @@
   <main class="container mx-auto px-6 py-16">
     <!-- Cyberpunk Section -->
     <div class="cyber-section cyberpunk-font">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div class="flex flex-col gap-4">
-                <h2 class="cyber-title">Mau Gabung Dengan Komunitas Kami?</h2>
-                <p class="text-2xl font-bold">XFIVECOMMUNITY</p>
+        <div class="grid grid-cols-2 gap-4 items-center">
+            <div class="flex flex-col gap-3 col-span-1">
+                <h2 class="cyber-title">Mau Gabung?</h2>
+                <p class="text-xl font-bold">XFIVECOMMUNITY</p>
                 <div>
-                    <label for="tester-select" class="block mb-2">Pilih Tester Kamu:</label>
-                    <select id="tester-select" class="cyber-select w-full p-2">
+                    <label for="tester-select" class="block mb-1 text-sm">Pilih Tester:</label>
+                    <select id="tester-select" class="cyber-select w-full p-2 text-sm">
                         <option value="https://wa.me/6281234567890">Ramsky</option>
                         <option value="https://wa.me/6281234567891">Fadhel</option>
                         <option value="https://wa.me/6281234567892">Joko</option>
                     </select>
                 </div>
-                <button id="select-now-btn" class="cyber-button p-2">Pilih Sekarang</button>
+                <button id="select-now-btn" class="cyber-button p-2 text-sm">Pilih Sekarang</button>
             </div>
-            <div class="flex flex-col items-center gap-4">
+            <div class="flex flex-col items-center justify-center gap-3 col-span-1">
                 <div id="qrcode"></div>
-                <button id="download-qr-btn" class="cyber-button p-2 w-full">Download QR</button>
+                <button id="download-qr-btn" class="cyber-button p-2 w-full max-w-[120px] text-sm">Download QR</button>
             </div>
         </div>
     </div>
@@ -558,8 +561,8 @@
         const testerSelect = document.getElementById('tester-select');
         const qrcodeContainer = document.getElementById('qrcode');
         let qrcode = new QRCode(qrcodeContainer, {
-            width: 180,
-            height: 180,
+            width: 150,
+            height: 150,
         });
 
         function generateQR(link) {

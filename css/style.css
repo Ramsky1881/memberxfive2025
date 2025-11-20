@@ -365,6 +365,11 @@
       content: '|'; display: inline-block; vertical-align: baseline;
       animation: blink-caret .75s step-end infinite; color: var(--neon-cyan);
     }
+    /* Hide the caret when typing is done */
+    .typewriter-text.typing-done::after {
+        content: '';
+        animation: none;
+    }
     @keyframes blink-caret { from, to { opacity: 1; } 50% { opacity: 0; } }
 
     .copy-btn {
@@ -375,4 +380,67 @@
     }
     .copy-btn:active {
         transform: scale(0.9);
+    }
+
+    /* --- Blacklist Table Styles --- */
+    #blacklist-table-body tr:hover {
+      background-color: rgba(255, 0, 255, 0.1);
+    }
+
+    #blacklist-table-body td {
+      transition: color 0.3s;
+    }
+
+    #blacklist-table-body tr:hover td {
+      color: var(--neon-cyan);
+    }
+
+    /* --- Media Queries for Mobile Optimization --- */
+    @media (max-width: 768px) {
+      .cyber-section {
+        padding: 1rem;
+      }
+      .profile-card-container {
+        height: 420px; /* Sedikit lebih pendek untuk mobile */
+      }
+      .profile-card-back {
+        padding: 1rem;
+      }
+      h1, h2, h3 {
+        text-align: center;
+      }
+      .cyber-title {
+        font-size: 1.5rem;
+      }
+      .flex-col.sm\\:flex-row {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        font-size: 14px;
+      }
+      .profile-card-container {
+        /* Izinkan tinggi otomatis menyesuaikan konten */
+        height: auto;
+        min-height: 400px;
+      }
+      .profile-card-front > .content-container {
+        padding: 1rem;
+      }
+      .glitch {
+        font-size: 1.8rem;
+      }
+      #back-to-top {
+        width: 40px;
+        height: 40px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 0.9rem;
+      }
+      .marquee-text {
+        font-size: 0.8rem;
+        animation-duration: 20s;
+      }
     }

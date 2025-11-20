@@ -15,6 +15,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
+  <!-- Lexend Font from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
@@ -40,8 +43,10 @@
   </header>
 
   <main class="container mx-auto px-6 pt-8 pb-16 relative z-10">
-    <div class="cyber-section cyberpunk-font cyber-aug-configuration" data-augmented-ui="tl-clip tr-clip bl-clip br-clip both">
-        <h2 class="cyber-title text-2xl mb-4">Blacklist & Out Member</h2>
+    <div class="cyber-section lexend-font cyber-aug-configuration" data-augmented-ui="tl-clip tr-clip bl-clip br-clip both">
+        <h2 class="cyber-title text-3xl mb-4 text-center font-bold">
+            <span class="blinking-red">Blacklist</span> & <span class="blinking-yellow">Out Community</span>
+        </h2>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
@@ -50,6 +55,7 @@
                         <th class="p-4">Nickname</th>
                         <th class="p-4">Jenis Pelanggaran</th>
                         <th class="p-4">Durasi Bergabung Kembali</th>
+                        <th class="p-4">Progress</th>
                     </tr>
                 </thead>
                 <tbody id="blacklist-table-body">

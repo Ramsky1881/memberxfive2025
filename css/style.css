@@ -444,3 +444,51 @@
         animation-duration: 20s;
       }
     }
+
+    /* --- Lexend Font & Blinking Effects for Blacklist Page --- */
+    .lexend-font {
+      font-family: 'Lexend', sans-serif;
+    }
+
+    .neon-green-text {
+        color: #00ff00;
+        text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+    }
+
+    .blinking-red {
+      color: #ff0000;
+      text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000;
+      animation: blink-red 1s infinite;
+    }
+
+    .blinking-yellow {
+      color: #ffff00;
+      text-shadow: 0 0 5px #ffff00, 0 0 10px #ffff00;
+      animation: blink-yellow 1.5s infinite;
+    }
+
+    @keyframes blink-red {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes blink-yellow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* --- Progress Bar for Blacklist Timer --- */
+    .progress-bar-container {
+      width: 100%;
+      height: 20px;
+      background-color: #333;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background-color: #00ff00;
+      transition: width 0.5s ease-in-out;
+    }

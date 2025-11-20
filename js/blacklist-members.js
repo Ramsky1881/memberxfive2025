@@ -2,30 +2,30 @@ const blacklistMembers = [
   {
     nama: "Aldy",
     nickname: "dxhmm-X5",
-    pelanggaran: "Out community tidak ada alasan",
+    pelanggaran: "Out community",
     outDate: "2025-07-09",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Diah",
     nickname: "ImperfectX5",
-    pelanggaran: "Out community tidak ada alasan",
+    pelanggaran: "Out community",
     outDate: "2025-03-09",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Yuliana",
     nickname: "-HoliciaX5-",
-    pelanggaran: "Out community putus cinta dengan Sadam",
+    pelanggaran: "Out community",
     outDate: "2025-07-20",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Samuel",
     nickname: "Os-SilentX5",
-    pelanggaran: "Out community tidak ada alasan",
+    pelanggaran: "Out community",
     outDate: "-",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Umam",
@@ -37,93 +37,79 @@ const blacklistMembers = [
   {
     nama: "Ryan",
     nickname: "AFK-X5",
-    pelanggaran: "Out community merasa tidak cocok dengan dirinya",
+    pelanggaran: "Out community",
     outDate: "2025-09-24",
-    duration: "permanent"
-  },
-  {
-    nama: "Rexel",
-    nickname: "CliverX5-",
-    pelanggaran: "Warning SP-1 program ilegal disaat club battle",
-    outDate: "2025-08-27",
-    duration: 1
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Firdan",
     nickname: "lucieneeX5-yX",
-    pelanggaran: "Out Community karena tidak cocok",
+    pelanggaran: "Out Community",
     outDate: "2025-09-18",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Aini",
     nickname: "ImAvriellX5",
-    pelanggaran: "Out Community putus cinta dengan Ramsky",
+    pelanggaran: "Out Community",
     outDate: "2025-09-30",
-    duration: "permanent"
+    duration: "6 // Durasi dalam bulan"
   },
   {
     nama: "Ghaffar",
     nickname: "TjxyfarX5-",
-    pelanggaran: "Out Community putus cinta dengan Icha",
+    pelanggaran: "Out Community",
     outDate: "2025-10-03",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Ivan",
     nickname: "Schatzvan-X5",
-    pelanggaran: "Out Community Pensi/Vakum",
+    pelanggaran: "Out Community",
     outDate: "2025-10-03",
-    duration: "permanent"
+    duration: "6 // Durasi dalam bulan"
   },
   {
     nama: "Tasya",
     nickname: "SYASYA-X5",
-    pelanggaran: "Out Community Pensi/Vakum",
+    pelanggaran: "Out Community",
     outDate: "2025-10-05",
-    duration: "permanent"
-  },
-  {
-    nama: "Erwin",
-    nickname: "nyxShiverX5",
-    pelanggaran: "Warning SP-1 chat CPL orang di luar X5 membuat risih",
-    outDate: "2025-10-05",
-    duration: 1
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Bobby",
     nickname: "kwwgX5",
-    pelanggaran: "Out community tidak ada alasan",
+    pelanggaran: "Out community",
     outDate: "2025-09-29",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Andika",
     nickname: "Hxyuth1FcX5-DZ",
-    pelanggaran: "Out community tidak ada alasan",
+    pelanggaran: "Out community",
     outDate: "2025-10-06",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "icha",
     nickname: "xychaX5-",
-    pelanggaran: "Out community karena mau pindah divisi",
+    pelanggaran: "Out community",
     outDate: "2025-10-07",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Rizky",
     nickname: "SimpleFleuRF-X5",
-    pelanggaran: "Out community tidak ada alasan",
+    pelanggaran: "Out community",
     outDate: "2025-10-09",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Devin",
     nickname: "pynutzX5-xB",
-    pelanggaran: "Out community tidak ada alasan",
+    pelanggaran: "Out community",
     outDate: "2025-10-09",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Yulia",
@@ -135,16 +121,16 @@ const blacklistMembers = [
   {
     nama: "hens",
     nickname: "-hensX5",
-    pelanggaran: "Out community tidak ada alasan",
+    pelanggaran: "Out community",
     outDate: "2025-10-11",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Ussy",
     nickname: "FTrust-X5",
-    pelanggaran: "Out community karena vakum cukup lama",
+    pelanggaran: "Out community",
     outDate: "2025-10-13",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Chandra",
@@ -156,23 +142,23 @@ const blacklistMembers = [
   {
     nama: "Sanny",
     nickname: "aLx-MatchaX5",
-    pelanggaran: "Out community karena vakum cukup lama",
+    pelanggaran: "Out community",
     outDate: "2025-10-14",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Deswin",
     nickname: "Wins-X5",
-    pelanggaran: "Out community fokus real",
+    pelanggaran: "Out community",
     outDate: "2025-10-15",
-    duration: "permanent"
+    duration: "6 // Durasi dalam bulan"
   },
   {
     nama: "Fadil",
     nickname: "StarX51Fc-BTR",
-    pelanggaran: "Out community karena tidak bisa berbaur",
+    pelanggaran: "Out community",
     outDate: "2025-10-17",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Imary",
@@ -184,64 +170,64 @@ const blacklistMembers = [
   {
     nama: "HanTan",
     nickname: "YoSEOBX5",
-    pelanggaran: "Out community karena tidak bisa berbaur",
+    pelanggaran: "Out community",
     outDate: "2025-10-25",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Cakra",
     nickname: "oxskyFv-X5",
-    pelanggaran: "Out community tidak ada alasan",
+    pelanggaran: "Out community",
     outDate: "2025-10-29",
-    duration: "permanent"
+    duration: "6 // Durasi dalam bulan"
   },
   {
     nama: "Mbew",
     nickname: "MbeawsL-X5",
-    pelanggaran: "Out community karena tidak bisa berbaur",
+    pelanggaran: "Out community karena",
     outDate: "2025-10-31",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Renaldo",
     nickname: "asTDoqiw-X5",
-    pelanggaran: "Hanya ingin keluar",
+    pelanggaran: "Out community",
     outDate: "2025-10-31",
-    duration: "permanent"
+    duration: "6 // Durasi dalam bulan"
   },
   {
     nama: "Alfi",
     nickname: "YopiewX5-TD",
-    pelanggaran: "Out Community jarang main",
+    pelanggaran: "Out Community",
     outDate: "2025-11-11",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Owen",
     nickname: "HohiX5",
     pelanggaran: "Out Community",
     outDate: "2025-11-12",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Ara",
     nickname: "LovemoreX5-666",
     pelanggaran: "Out Community putus cinta dengan Fasky",
     outDate: "2025-11-12",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Ira",
     nickname: "ScraperX5",
     pelanggaran: "Out Community",
     outDate: "2025-11-16",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   },
   {
     nama: "Tere",
     nickname: "awTantrum-X5",
     pelanggaran: "Out Community",
     outDate: "2025-11-17",
-    duration: "permanent"
+    duration: "3 // Durasi dalam bulan"
   }
 ];

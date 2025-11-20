@@ -30,7 +30,7 @@ const blacklistMembers = [
   {
     nama: "Umam",
     nickname: "pecel-X5",
-    pelanggaran: "Blacklist",
+    pelanggaran: "Blacklist penipuan transaksi tidak bayar micash gift",
     outDate: "2025-06-09",
     duration: "permanent"
   },
@@ -114,7 +114,7 @@ const blacklistMembers = [
   {
     nama: "Yulia",
     nickname: "yuppyAMC-X5 / Babyy-X5",
-    pelanggaran: "Blacklist",
+    pelanggaran: "Blacklist community karena problem matik",
     outDate: "2025-10-11",
     duration: "permanent"
   },
@@ -135,7 +135,7 @@ const blacklistMembers = [
   {
     nama: "Chandra",
     nickname: "Chennn-X5",
-    pelanggaran: "Blacklist",
+    pelanggaran: "Blacklist community karena fake photo",
     outDate: "2025-10-14",
     duration: "permanent"
   },
@@ -163,7 +163,7 @@ const blacklistMembers = [
   {
     nama: "Imary",
     nickname: "soheeFv-X5",
-    pelanggaran: "Blacklist",
+    pelanggaran: "Blacklist community (GA NERIMA GAY)",
     outDate: "2025-10-18",
     duration: "permanent"
   },
@@ -184,7 +184,7 @@ const blacklistMembers = [
   {
     nama: "Mbew",
     nickname: "MbeawsL-X5",
-    pelanggaran: "Out community",
+    pelanggaran: "Out community karena",
     outDate: "2025-10-31",
     duration: 3 // Durasi dalam bulan
   },
@@ -212,7 +212,7 @@ const blacklistMembers = [
   {
     nama: "Ara",
     nickname: "LovemoreX5-666",
-    pelanggaran: "Out Community",
+    pelanggaran: "Out Community putus cinta dengan Fasky",
     outDate: "2025-11-12",
     duration: 3 // Durasi dalam bulan
   },
@@ -233,6 +233,13 @@ const blacklistMembers = [
   {
     nama: "Jov",
     nickname: "Maive-X5",
+    pelanggaran: "Out Community",
+    outDate: "2025-11-20",
+    duration: 3 // Durasi dalam bulan
+  },
+  {
+    nama: "Luki",
+    nickname: "-K141-X5",
     pelanggaran: "Out Community",
     outDate: "2025-11-20",
     duration: 3 // Durasi dalam bulan

@@ -10,21 +10,21 @@ const blacklistMembers = [
     nama: "Diah",
     nickname: "ImperfectX5",
     pelanggaran: "Out community",
-    outDate: "2025-03-09",
+    outDate: "2025-08-09",
     duration: 3 // Durasi dalam bulan
   },
   {
     nama: "Yuliana",
     nickname: "-HoliciaX5-",
     pelanggaran: "Out community",
-    outDate: "2025-07-20",
+    outDate: "2025-09-20",
     duration: 3 // Durasi dalam bulan
   },
   {
     nama: "Samuel",
     nickname: "Os-SilentX5",
     pelanggaran: "Out community",
-    outDate: "-",
+    outDate: "2025-10-25",
     duration: 3 // Durasi dalam bulan
   },
   {

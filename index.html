@@ -7,8 +7,8 @@
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- QR Code Library -->
+   
+  <!-- QRCode.js -->
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
   <!-- Google Fonts -->
@@ -18,9 +18,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
-
-  <!-- Font Awesome untuk Ikon -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Augmented UI -->
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/augmented-ui@2/augmented-ui.min.css">
+
+  <!-- Model Viewer untuk AR -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
   <style>
     :root {
@@ -29,239 +34,424 @@
       --cyber-bg: #0a0a0a;
       --cyber-primary: #f0f;
       --cyber-secondary: #0ff;
+      --dark-bg: #0d1117;
     }
 
     body {
       font-family: 'Lato', sans-serif;
-      background-color: #0d1117;
+      background-color: var(--dark-bg);
       min-height: 100vh;
-      background-image:
-        radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.15), transparent 60%),
-        radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.15), transparent 60%);
+      color: #eee;
+      overflow-x: hidden;
+      /* 3. CUSTOM CURSOR (Visual Dasar) */
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300ffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z'/></svg>") 0 0, crosshair;
     }
-    
+      
     .cyberpunk-font {
         font-family: 'VT323', monospace;
     }
 
     h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
-    
+      
     .neon-text {
       color: var(--neon-cyan);
       text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
     }
+
+    /* --- 1. CUSTOM SCROLLBAR --- */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #0a0a0a; 
+    }
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(var(--cyber-secondary), var(--cyber-primary)); 
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--neon-pink); 
+    }
+
+    /* --- 2. PRELOADER --- */
+    #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.5s ease-out;
+    }
+    .scanner {
+        width: 100%;
+        height: 4px;
+        background: var(--neon-cyan);
+        box-shadow: 0 0 10px var(--neon-cyan);
+        animation: scan 2s infinite linear;
+        position: absolute;
+        top: 0;
+    }
+    .loader-text {
+        font-family: 'VT323', monospace;
+        font-size: 2rem;
+        color: var(--neon-cyan);
+        letter-spacing: 5px;
+        animation: blink 1s infinite;
+    }
+    @keyframes scan {
+        0% { top: 0%; opacity: 0; }
+        50% { opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+    }
+
+    /* --- 3. CURSOR TRAIL EFFECT --- */
+    .cursor-trail {
+        width: 8px;
+        height: 8px;
+        background: var(--neon-cyan);
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.8;
+        transition: transform 0.1s, opacity 0.3s;
+        box-shadow: 0 0 8px var(--neon-cyan);
+    }
+
+    /* --- 4. GLITCH TITLE --- */
+    .glitch-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+    .glitch {
+        position: relative;
+        color: var(--neon-cyan);
+    }
+    .glitch::before, .glitch::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .glitch::before {
+        left: 2px; text-shadow: -1px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim 5s infinite linear alternate-reverse;
+    }
+    .glitch::after {
+        left: -2px; text-shadow: -1px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim2 5s infinite linear alternate-reverse;
+    }
+    @keyframes glitch-anim {
+        0% { clip: rect(36px, 9999px, 9px, 0); }
+        100% { clip: rect(11px, 9999px, 80px, 0); }
+    }
+    @keyframes glitch-anim2 {
+        0% { clip: rect(16px, 9999px, 68px, 0); }
+        100% { clip: rect(2px, 9999px, 64px, 0); }
+    }
+
+    /* --- 5. GLITCH IMAGE HOVER (ZOOM + RGB SPLIT) --- */
+    .img-glitch-hover {
+        transition: all 0.3s ease-out;
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+    }
+    .profile-card-container:hover .img-glitch-hover {
+        transform: scale(1.05);
+        filter: drop-shadow(-4px -4px 0px rgba(255, 0, 255, 0.6)) drop-shadow(4px 4px 0px rgba(0, 255, 255, 0.6));
+    }
+
+    /* --- 6. BACKGROUND PARTICLES CANVAS --- */
+    #particles-canvas {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: -1;
+        background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
+    }
+
+    /* --- 7. BACK TO TOP BUTTON --- */
+    #back-to-top {
+        position: fixed; bottom: 30px; right: 30px;
+        background: rgba(0, 0, 0, 0.8);
+        border: 2px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        width: 50px; height: 50px;
+        border-radius: 50%;
+        display: flex; justify-content: center; align-items: center;
+        cursor: pointer; opacity: 0; visibility: hidden;
+        transition: all 0.3s ease; z-index: 50;
+        box-shadow: 0 0 10px var(--neon-cyan);
+    }
+    #back-to-top:hover {
+        background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px var(--neon-cyan);
+    }
+    #back-to-top.show { opacity: 1; visibility: visible; }
+
+    /* --- 8. TOAST NOTIFICATION --- */
+    #toast {
+        visibility: hidden;
+        min-width: 250px;
+        background-color: rgba(0, 0, 0, 0.9);
+        border: 1px solid var(--neon-pink);
+        color: #fff;
+        text-align: center;
+        border-radius: 4px;
+        padding: 16px;
+        position: fixed;
+        z-index: 100;
+        left: 50%;
+        bottom: 30px;
+        transform: translateX(-50%);
+        box-shadow: 0 0 15px var(--neon-pink);
+        font-family: 'Orbitron', sans-serif;
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+    #toast.show {
+        visibility: visible;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+    @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+    @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+    /* --- 9. RECRUITMENT WIDGET (BLINKING) --- */
+    .status-indicator {
+        display: inline-block;
+        width: 10px; height: 10px;
+        border-radius: 50%;
+        background-color: #00ff00;
+        margin-right: 8px;
+        box-shadow: 0 0 10px #00ff00;
+        animation: blink-status 1.5s infinite;
+    }
+    @keyframes blink-status {
+        0% { opacity: 1; box-shadow: 0 0 5px #00ff00; }
+        50% { opacity: 0.3; box-shadow: 0 0 0 #00ff00; }
+        100% { opacity: 1; box-shadow: 0 0 5px #00ff00; }
+    }
+
+    /* --- 10. SCROLL REVEAL ANIMATION CLASS --- */
+    .reveal-card {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s cubic-bezier(0.5, 0, 0, 1);
+    }
+    .reveal-card.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
     
-    /* Cyberpunk Section */
+    /* --- 11. AR BUTTON STYLE --- */
+    .ar-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-family: 'Orbitron', sans-serif;
+        cursor: pointer;
+        z-index: 20;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .ar-btn:hover {
+        background: var(--neon-cyan);
+        color: #000;
+        box-shadow: 0 0 15px var(--neon-cyan);
+        transform: scale(1.05);
+    }
+
+    /* --- AUGMENTED UI & LAYOUT --- */
+    .cyber-aug-configuration {
+      --aug-tr: 15px; --aug-bl: 30px; --aug-br: 15px; --aug-tl: 10px; 
+      --aug-border-all: 2px; --aug-border-bg: var(--cyber-primary);
+      --aug-inlay-all: 0px; --aug-inlay-opacity: 0.98; 
+    }
+
     .cyber-section {
-        background: var(--cyber-bg);
-        border: 2px solid var(--cyber-primary);
-        box-shadow: 0 0 15px var(--cyber-primary), inset 0 0 15px var(--cyber-primary);
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
+        padding: 1.5rem; margin-bottom: 2.5rem;
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        --aug-inlay-bg: rgba(10, 10, 10, 0.8);
+        backdrop-filter: blur(5px);
     }
-    
-    .cyber-title {
-        color: var(--cyber-secondary);
-        text-shadow: 0 0 5px var(--cyber-secondary);
-        font-size: 1.25rem; /* Smaller font size for mobile */
-        text-transform: uppercase;
-    }
-    
     .cyber-select {
-        background: #1a1a1a;
-        border: 1px solid var(--cyber-secondary);
-        color: var(--cyber-secondary);
+        background: #1a1a1a; border: 1px solid var(--cyber-secondary); color: var(--cyber-secondary);
         box-shadow: 0 0 5px var(--cyber-secondary);
     }
-    
     .cyber-button {
-        background: transparent;
-        border: 2px solid var(--cyber-secondary);
-        color: var(--cyber-secondary);
-        text-transform: uppercase;
-        transition: all 0.3s ease;
-        text-shadow: 0 0 5px var(--cyber-secondary);
-        box-shadow: 0 0 10px var(--cyber-secondary);
+        background: transparent; border: 2px solid var(--cyber-secondary); color: var(--cyber-secondary);
+        text-transform: uppercase; transition: all 0.3s ease; cursor: pointer;
+        text-shadow: 0 0 5px var(--cyber-secondary); box-shadow: 0 0 10px var(--cyber-secondary);
     }
-    
     .cyber-button:hover {
-        background: var(--cyber-secondary);
-        color: var(--cyber-bg);
-        box-shadow: 0 0 20px var(--cyber-secondary);
+        background: var(--cyber-secondary); color: var(--cyber-bg); box-shadow: 0 0 20px var(--cyber-secondary);
     }
 
     #qrcode {
-        border: 4px solid var(--cyber-primary);
-        padding: 8px;
-        background: white;
-        width: 120px;
-        height: 120px;
-        margin: 0 auto;
+        border: 4px solid var(--cyber-primary); padding: 8px; background: white;
+        width: 120px; height: 120px; margin: 0 auto;
     }
-    
-    #qrcode img {
-        width: 100% !important;
-        height: 100% !important;
-    }
+    #qrcode img, #qrcode canvas { width: 100% !important; height: 100% !important; }
 
-
-    /* --- Marquee Text Broadcast --- */
     .marquee-container {
-        width: 100%;
-        background-color: #990000;
-        color: white;
-        overflow: hidden;
-        white-space: nowrap;
-        box-shadow: 0 2px 15px rgba(255, 0, 0, 0.5);
-        border-top: 1px solid #ff0000;
-        border-bottom: 1px solid #ff0000;
+        width: 100%; background-color: #990000; color: white; overflow: hidden;
+        white-space: nowrap; box-shadow: 0 2px 15px rgba(255, 0, 0, 0.5);
+        border-top: 1px solid #ff0000; border-bottom: 1px solid #ff0000;
+        position: relative; z-index: 10;
     }
     .marquee-text {
-        display: inline-block;
-        padding: 6px 0;
-        font-family: 'Orbitron', sans-serif;
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
+        display: inline-block; padding: 6px 0; font-family: 'Orbitron', sans-serif;
+        font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;
         animation: marquee-scroll 25s linear infinite;
     }
-    @keyframes marquee-scroll {
-        from { transform: translateX(100vw); }
-        to { transform: translateX(-100%); }
-    }
+    @keyframes marquee-scroll { from { transform: translateX(100vw); } to { transform: translateX(-100%); } }
 
-    /* Container untuk efek 3D perspective */
+    /* CARD STYLES */
     .profile-card-container {
-      perspective: 1200px;
-      height: 450px;
-      position: relative;
+      perspective: 1200px; height: 450px; position: relative;
     }
     .profile-card-inner {
-      position: absolute;
-      inset: 0;
-      transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: absolute; inset: 0; transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
       transform-style: preserve-3d;
     }
     .profile-card-container.is-flipped .profile-card-inner { transform: rotateY(180deg); }
+
     .profile-card-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      border-radius: 1rem;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      transform: translateZ(0); /* Hardware acceleration */
-    }
-    .profile-card-front {
-      background-size: cover;
-      background-position: center;
-      color: white;
-      justify-content: flex-end;
-    }
-    .profile-card-front::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.85) 20%, rgba(0,0,0,0.1) 60%);
-      z-index: 1;
-    }
-    .profile-card-front > * { position: relative; z-index: 2; }
-    .profile-card-back {
-      transform: rotateY(180deg);
-      background: linear-gradient(135deg, rgba(255,0,255,0.15), rgba(0,255,255,0.05));
-      padding: 1.5rem;
-      justify-content: space-between;
+      position: absolute; width: 100%; height: 100%;
+      -webkit-backface-visibility: hidden; backface-visibility: hidden;
+      overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: translateZ(0);
     }
 
-    /* --- Animated Gradient Button --- */
-    .ghost-btn {
-        position: relative;
-        border: none;
-        color: white;
-        background: transparent;
-        transition: transform 0.3s ease;
-        overflow: hidden;
+    .profile-card-front { --aug-inlay-bg: #1a1a1a; }
+    .profile-card-front img.main-photo {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        object-fit: cover; object-position: center top; z-index: 0;
+    }
+    .profile-card-front .overlay {
+        position: absolute; inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.6) 40%, transparent 100%);
         z-index: 1;
     }
+    .profile-card-front > .content-container { 
+      position: relative; z-index: 2; width: 100%; height: 100%; padding: 1.5rem;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      align-items: flex-start; text-align: left;
+    }
+
+    /* --- 4. GLASSMORPHISM PADA KARTU BELAKANG --- */
+    .profile-card-back {
+      transform: rotateY(180deg);
+      /* Background semi-transparan dengan blur */
+      --aug-inlay-bg: rgba(20, 20, 30, 0.75); 
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 1.5rem; justify-content: space-between; z-index: 5;
+    }
+
+    .ghost-btn {
+        position: relative; border: none; color: white; background: transparent;
+        transition: transform 0.3s ease; overflow: hidden; z-index: 1; cursor: pointer;
+    }
     .ghost-btn::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), #8A2BE2, var(--neon-cyan));
-        background-size: 300% 100%;
-        z-index: -2;
-        transition: all 0.5s ease;
-        animation: moveGradient 4s linear infinite;
+        background-size: 300% 100%; z-index: -2;
+        transition: all 0.5s ease; animation: moveGradient 4s linear infinite;
     }
     .ghost-btn::after {
-        content: '';
-        position: absolute;
-        top: 2px; left: 2px;
-        width: calc(100% - 4px);
-        height: calc(100% - 4px);
-        background: #161b22;
-        z-index: -1;
-        border-radius: 9999px; /* To match rounded-full */
+        content: ''; position: absolute; top: 2px; left: 2px;
+        width: calc(100% - 4px); height: calc(100% - 4px);
+        background: #161b22; z-index: -1; border-radius: 9999px;
     }
-    @keyframes moveGradient {
-        0% { background-position: 0% 50%; }
-        100% { background-position: 150% 50%; }
-    }
+    @keyframes moveGradient { 0% { background-position: 0% 50%; } 100% { background-position: 150% 50%; } }
     .ghost-btn:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 15px var(--neon-pink), 0 0 25px var(--neon-pink);
-    }
-    .ghost-btn:hover::before {
-        animation-duration: 2s;
+        transform: scale(1.05); box-shadow: 0 0 15px var(--neon-pink), 0 0 25px var(--neon-pink);
     }
     .light-sweep {
-        position: absolute;
-        top: 0;
-        left: -150%;
-        width: 50%;
-        height: 100%;
+        position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-        transform: skewX(-25deg);
-        transition: left 0.7s ease-in-out;
+        transform: skewX(-25deg); transition: left 0.7s ease-in-out;
     }
-    .ghost-btn:hover .light-sweep {
-        left: 150%;
-    }
-    
-    /* Typewriter effect */
+    .ghost-btn:hover .light-sweep { left: 150%; }
+      
     .typewriter-text::after {
-      content: '|';
-      display: inline-block;
-      vertical-align: baseline;
-      animation: blink-caret .75s step-end infinite;
-      color: var(--neon-cyan);
+      content: '|'; display: inline-block; vertical-align: baseline;
+      animation: blink-caret .75s step-end infinite; color: var(--neon-cyan);
     }
-    @keyframes blink-caret {
-      from, to { opacity: 1; }
-      50% { opacity: 0; }
+    @keyframes blink-caret { from, to { opacity: 1; } 50% { opacity: 0; } }
+
+    .copy-btn {
+        transition: color 0.2s;
+    }
+    .copy-btn:hover {
+        color: var(--neon-cyan);
+    }
+    .copy-btn:active {
+        transform: scale(0.9);
     }
   </style>
 </head>
 <body class="text-gray-200">
 
-  <!-- Header dengan Tombol Filter dan Pencarian -->
-  <header class="sticky top-0 bg-black/30 backdrop-blur-lg border-b border-white/10 z-20">
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <div class="scanner"></div>
+    <div class="loader-text">XFIVE SYSTEM INITIALIZING...</div>
+  </div>
+
+  <!-- BACKGROUND PARTICLES -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast">Nickname Copied!</div>
+
+  <!-- MODEL VIEWER FOR AR (HIDDEN, ACTIVATED VIA JS) -->
+  <!-- Using a generic Robot model as placeholder since we don't have individual 3D scans -->
+  <model-viewer id="ar-viewer" 
+      src="https://modelviewer.dev/shared-assets/models/RobotExpressive.glb" 
+      ios-src="https://modelviewer.dev/shared-assets/models/RobotExpressive.usdz"
+      ar 
+      ar-modes="webxr scene-viewer quick-look" 
+      camera-controls 
+      auto-rotate
+      shadow-intensity="1"
+      style="display: none;">
+  </model-viewer>
+
+  <!-- BACK TO TOP BUTTON -->
+  <button id="back-to-top" title="Kembali ke atas">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <header class="sticky top-0 bg-black/60 backdrop-blur-md border-b border-white/10 z-20">
     <nav class="container mx-auto px-6 py-4 flex flex-col gap-4">
-      <!-- Logo dan Pencarian (baris atas) -->
       <div class="flex flex-col sm:flex-row justify-between items-center w-full gap-4">
-        <h1 class="text-xl sm:text-2xl font-bold tracking-wider neon-text">XFiveCommunity</h1>
+        <!-- GLITCH TITLE -->
+        <h1 class="text-xl sm:text-2xl font-bold tracking-wider glitch-wrapper">
+            <span class="glitch" data-text="XFiveCommunity">XFiveCommunity</span>
+        </h1>
         <div class="relative w-full sm:w-64">
-          <input type="text" id="searchInput" placeholder="Cari anggota..." class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-500" />
+          <input type="text" id="searchInput" placeholder="Cari anggota..." class="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 border border-gray-700" />
           <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
         </div>
       </div>
 
-      <!-- Tombol Filter (baris bawah) -->
       <div class="flex items-center space-x-2 flex-wrap justify-center sm:justify-start gap-2">
         <button data-category="all" class="filter-btn px-4 py-2 bg-fuchsia-600/80 hover:bg-fuchsia-500 text-white rounded-lg text-sm font-medium transition-all">All</button>
         <button data-category="male" class="filter-btn px-4 py-2 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Male</button>
@@ -271,22 +461,26 @@
     </nav>
   </header>
 
-  <!-- Marquee Text Broadcast -->
   <div class="marquee-container">
     <p class="marquee-text">Data terakhir update 8 November 2025 | Welcome To XFIVE Community Ayodance</p>
   </div>
 
-  <!-- Main Content -->
-  <main class="container mx-auto px-6 pt-8 pb-16">
-    <!-- Cyberpunk Section -->
-    <div class="cyber-section cyberpunk-font">
-        <div class="grid grid-cols-2 gap-4 items-center">
-            <div class="flex flex-col gap-3 col-span-1">
-                <h2 class="cyber-title">Mau Gabung?</h2>
-                <p class="text-xl font-bold">XFIVECOMMUNITY</p>
-                <div>
-                    <label for="tester-select" class="block mb-1 text-sm">Pilih Tester:</label>
-                    <select id="tester-select" class="cyber-select w-full p-2 text-sm">
+  <main class="container mx-auto px-6 pt-8 pb-16 relative z-10">
+    <div class="cyber-section cyberpunk-font cyber-aug-configuration" data-augmented-ui="tl-clip tr-clip bl-clip br-clip both">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="flex flex-col gap-4 col-span-1">
+                <h2 class="cyber-title text-2xl">Mau Gabung?</h2>
+                
+                <!-- 6. WIDGET STATUS REKRUTMEN -->
+                <div class="flex items-center text-sm font-bold tracking-widest bg-black/40 p-2 rounded border border-green-500/30 w-fit">
+                    <span class="status-indicator"></span>
+                    <span class="text-green-400">SYSTEM ONLINE: RECRUITMENT ACTIVE</span>
+                </div>
+
+                <p class="text-xl font-bold tracking-widest mt-2">XFIVECOMMUNITY</p>
+                <div class="w-full max-w-md">
+                    <label for="tester-select" class="block mb-2 text-lg">Pilih Tester:</label>
+                    <select id="tester-select" class="cyber-select w-full p-3 text-lg rounded-none cursor-pointer">
                         <option value="https://wa.me/6282165791404">Dena</option>
                         <option value="https://wa.me/6281342620907">Zarah</option>
                         <option value="https://wa.me/6281776897588">Vania</option>
@@ -295,25 +489,194 @@
                         <option value="https://wa.me/6285211516594">Wicaksono</option>
                     </select>
                 </div>
-                <button id="select-now-btn" class="cyber-button p-2 text-sm">Pilih Sekarang</button>
+                <button id="select-now-btn" class="cyber-button p-3 w-full max-w-md text-lg font-bold mt-2 hover:scale-[1.02]">Hubungi Sekarang</button>
             </div>
-            <div class="flex flex-col items-center justify-center gap-3 col-span-1">
+            <div class="flex flex-col items-center justify-center gap-4 col-span-1">
                 <div id="qrcode"></div>
-                <button id="download-qr-btn" class="cyber-button p-2 w-full max-w-[120px] text-sm">Download QR</button>
+                <button id="download-qr-btn" class="cyber-button p-2 w-[120px] text-sm">Download QR</button>
             </div>
         </div>
     </div>
-  
-    <div id="profile-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+    
+    <div id="profile-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12"></div>
   </main>
 
-  <!-- Footer -->
-  <footer class="text-center py-8 mt-8">
+  <footer class="text-center py-8 mt-8 border-t border-white/10 relative z-10 bg-black/80">
     <p class="text-gray-500 text-sm">&copy; 2025 XFiveCommunity. All rights reserved.</p>
   </footer>
 
   <script>
-    // Data anggota
+    // --- 3. CURSOR TRAIL LOGIC ---
+    document.addEventListener('mousemove', function(e) {
+        const trail = document.createElement('div');
+        trail.className = 'cursor-trail';
+        trail.style.left = e.pageX + 'px';
+        trail.style.top = e.pageY + 'px';
+        document.body.appendChild(trail);
+
+        setTimeout(() => {
+            trail.style.transform = 'scale(0)';
+            trail.style.opacity = '0';
+        }, 50);
+
+        setTimeout(() => {
+            trail.remove();
+        }, 350);
+    });
+
+    // --- PARTICLE ANIMATION LOGIC ---
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particlesArray;
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.directionX = (Math.random() * 1) - 0.5; 
+            this.directionY = (Math.random() * 1) - 0.5;
+            this.size = Math.random() * 2 + 1;
+            this.color = Math.random() > 0.5 ? '#00ffff' : '#ff00ff'; 
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+        update() {
+            if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+            if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+            this.x += this.directionX;
+            this.y += this.directionY;
+            this.draw();
+        }
+    }
+
+    function initParticles() {
+        particlesArray = [];
+        let numberOfParticles = (canvas.height * canvas.width) / 15000; 
+        for (let i = 0; i < numberOfParticles; i++) {
+            particlesArray.push(new Particle());
+        }
+    }
+
+    function animateParticles() {
+        requestAnimationFrame(animateParticles);
+        ctx.clearRect(0, 0, innerWidth, innerHeight);
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+        }
+        connectParticles();
+    }
+
+    function connectParticles() {
+        let opacityValue = 1;
+        for (let a = 0; a < particlesArray.length; a++) {
+            for (let b = a; b < particlesArray.length; b++) {
+                let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                if (distance < (canvas.width/7) * (canvas.height/7)) {
+                    opacityValue = 1 - (distance / 20000);
+                    ctx.strokeStyle = 'rgba(255,255,255,' + opacityValue + ')';
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                    ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        initParticles();
+    });
+
+    initParticles();
+    animateParticles();
+
+    // --- PRELOADER LOGIC ---
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('preloader');
+        setTimeout(() => {
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        }, 1500); 
+    });
+
+    // --- BACK TO TOP LOGIC ---
+    const backToTopBtn = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    });
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // --- 1. ONE-CLICK COPY LOGIC ---
+    function showToast() {
+        const toast = document.getElementById("toast");
+        toast.className = "show";
+        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+    }
+
+    function copyToClipboard(text) {
+        // Fallback for older browsers or non-secure contexts
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast();
+            }, (err) => {
+                console.error('Could not copy text: ', err);
+            });
+        } else {
+            // Textarea hack
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast();
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textArea);
+        }
+    }
+    
+    // --- AR BUTTON LOGIC ---
+    function activateAR(name) {
+        const modelViewer = document.querySelector('#ar-viewer');
+        if (modelViewer) {
+            // In a real app, we would swap the 'src' based on the user name here
+            // modelViewer.src = `assets/3d/${name}.glb`;
+            modelViewer.activateAR();
+        } else {
+            alert("AR Module not loaded!");
+        }
+    }
+
+    // --- EXISTING APP LOGIC ---
+    function handleImageError(img, name) {
+        img.onerror = null; 
+        img.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&size=512&font-size=0.33`;
+    }
+
     const members = [
       // Dewan Community
       { name: 'Ramsky', title: 'Owner Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/Ramsky.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/Ramsky.jpeg', nickname: '-RamsX5', domisili: 'Bogor', dob: '7 Juni', gender: '-', category: 'dewan staff' },
@@ -555,12 +918,26 @@
       profileGrid.innerHTML = '';
 
       if (filteredMembers.length === 0) {
-        profileGrid.innerHTML = '<p class="text-center col-span-full text-gray-500 text-lg">Tidak ada anggota yang ditemukan.</p>';
+        profileGrid.innerHTML = '<div class="col-span-full flex flex-col items-center justify-center py-12 opacity-50"><i class="fas fa-ghost text-6xl mb-4 text-gray-600"></i><p class="text-center text-gray-400 text-xl">Tidak ada anggota yang ditemukan.</p></div>';
+        return; 
       }
 
-      filteredMembers.forEach((member) => {
+      // --- 5. SCROLL REVEAL & FILTER ANIMATION ---
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target);
+            }
+        });
+      }, { threshold: 0.1 });
+
+      filteredMembers.forEach((member, index) => {
         const cardContainer = document.createElement('div');
-        cardContainer.className = 'profile-card-container';
+        // Tambahkan class 'reveal-card' untuk animasi scroll
+        cardContainer.className = 'profile-card-container group reveal-card';
+        // Sedikit delay bertahap untuk efek staggered
+        cardContainer.style.transitionDelay = `${index * 50}ms`; 
 
         const cardInner = document.createElement('div');
         cardInner.className = 'profile-card-inner';
@@ -568,39 +945,68 @@
         const genderIcon = member.gender === 'male' ? '<i class="fas fa-mars text-blue-400"></i>' : (member.gender === 'female' ? '<i class="fas fa-venus text-pink-400"></i>' : '');
         const genderText = member.gender === 'male' ? 'Male' : (member.gender === 'female' ? 'Female' : '-');
 
+        // Card Front
         const cardFront = document.createElement('div');
-        cardFront.className = 'profile-card-face profile-card-front';
-        cardFront.style.backgroundImage = `url('${member.bgImage}')`;
+        cardFront.className = 'profile-card-face profile-card-front cyber-aug-configuration';
+        cardFront.setAttribute('data-augmented-ui', 'tl-clip tr-clip bl-clip br-clip both');
+        
         cardFront.innerHTML = `
-          <div class="p-6 w-full">
-            <div style="min-height: 54px;"> <!-- Container to prevent layout shift -->
-                <h2 class="text-3xl font-bold typewriter-text" data-text="${member.name}"></h2>
-            </div>
-            <p class="text-lg text-gray-300">${member.title}</p>
-            <button class="flip-btn ghost-btn w-full sm:w-auto mt-4 py-2 px-6 rounded-full text-sm font-semibold">
-              Lihat Detail
-              <span class="light-sweep"></span>
+            <img class="main-photo img-glitch-hover" 
+                 src="${member.avatar}" 
+                 alt="${member.name}" 
+                 loading="lazy"
+                 onerror="handleImageError(this, '${member.name}')">
+            <div class="overlay"></div>
+            
+            <!-- 1. TOMBOL AR DI SINI -->
+            <button class="ar-btn" onclick="activateAR('${member.name}')" title="View in AR">
+                <i class="fas fa-cube"></i> View in AR
             </button>
-          </div>
+
+            <div class="content-container">
+                <div class="min-h-[54px] mb-1 w-full flex justify-start items-end"> 
+                    <h2 class="text-3xl font-bold typewriter-text leading-tight text-white drop-shadow-lg" data-text="${member.name}"></h2>
+                </div>
+                <p class="text-lg text-cyan-300 font-medium mb-4 drop-shadow-md uppercase tracking-widest">${member.title}</p>
+                <button class="flip-btn ghost-btn w-full py-2 px-6 rounded text-sm font-bold uppercase tracking-wider mx-auto self-center"> 
+                  Lihat Detail
+                  <span class="light-sweep"></span>
+                </button>
+            </div>
         `;
 
+        // Card Back (Updated with Copy Icon)
         const cardBack = document.createElement('div');
-        cardBack.className = 'profile-card-face profile-card-back';
+        cardBack.className = 'profile-card-face profile-card-back cyber-aug-configuration';
+        cardBack.setAttribute('data-augmented-ui', 'tl-clip tr-clip bl-clip br-clip both');
+
+        const imgHTML = `<img class="w-24 h-24 rounded-full object-cover border-4 border-fuchsia-500/50 mx-auto shadow-lg shadow-fuchsia-500/20" 
+                             src="${member.avatar}" 
+                             alt="Avatar ${member.name}" 
+                             loading="lazy"
+                             onerror="handleImageError(this, '${member.name}')">`;
+
         cardBack.innerHTML = `
-          <div class="text-center">
-            <img class="w-24 h-24 rounded-full object-cover border-4 border-fuchsia-500/50 mx-auto" src="${member.avatar}" alt="Avatar ${member.name}">
+          <div class="text-center relative z-10">
+            ${imgHTML}
             <h2 class="text-2xl font-bold text-white mt-3">${member.name}</h2>
-            <p class="text-fuchsia-400 font-medium">${member.title}</p>
+            <p class="text-fuchsia-400 font-medium text-sm tracking-wide">${member.title}</p>
           </div>
-          <div class="text-left mt-4 border-t border-white/10 pt-4 space-y-3 self-stretch">
-            <div class="flex items-center"><i class="fas fa-user-circle fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2">Nickname:</span><span>${member.nickname}</span></div>
-            <div class="flex items-center"><i class="fas fa-map-marker-alt fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2">Domisili:</span><span>${member.domisili}</span></div>
-            <div class="flex items-center"><i class="fas fa-calendar-alt fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2">Tanggal Lahir:</span><span>${member.dob}</span></div>
-            <div class="flex items-center"><span class="font-semibold mr-2 w-6">${genderIcon}</span><span class="font-semibold mr-2">Jenis Kelamin:</span><span>${genderText}</span></div>
+          <div class="text-left mt-4 border-t border-white/10 pt-4 space-y-2 text-sm self-stretch flex-grow relative z-10">
+            <div class="flex items-center bg-white/5 p-2 rounded">
+                <i class="fas fa-user-circle fa-fw w-6 text-gray-400"></i>
+                <span class="font-semibold mr-2 text-gray-300">Nick:</span>
+                <span class="text-white truncate flex-1">${member.nickname}</span>
+                <!-- 1. COPY BUTTON -->
+                <i class="fas fa-copy ml-2 cursor-pointer copy-btn text-gray-400 hover:text-white" onclick="copyToClipboard('${member.nickname}')" title="Copy Nickname"></i>
+            </div>
+            <div class="flex items-center bg-white/5 p-2 rounded"><i class="fas fa-map-marker-alt fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2 text-gray-300">Domisili:</span><span class="text-white">${member.domisili}</span></div>
+            <div class="flex items-center bg-white/5 p-2 rounded"><i class="fas fa-calendar-alt fa-fw w-6 text-gray-400"></i><span class="font-semibold mr-2 text-gray-300">Lahir:</span><span class="text-white">${member.dob}</span></div>
+            <div class="flex items-center bg-white/5 p-2 rounded"><span class="font-semibold mr-2 w-6 text-center">${genderIcon}</span><span class="font-semibold mr-2 text-gray-300">Gender:</span><span class="text-white">${genderText}</span></div>
           </div>
-          <button class="flip-btn w-full bg-fuchsia-600/80 hover:bg-fuchsia-500 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2">
+          <button class="flip-btn w-full mt-4 bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white font-semibold py-2 px-4 rounded transition-colors flex items-center justify-center space-x-2 group-hover:border-fuchsia-500 relative z-10">
             <i class="fas fa-arrow-left"></i>
-            <span>Kembali</span>
+            <span>KEMBALI</span>
           </button>
         `;
 
@@ -608,41 +1014,40 @@
         cardInner.appendChild(cardBack);
         cardContainer.appendChild(cardInner);
         profileGrid.appendChild(cardContainer);
+        
+        // Observe element for scroll reveal
+        observer.observe(cardContainer);
       });
 
       addEventListeners();
-      
-      // Initialize typewriter effect for newly rendered cards
       document.querySelectorAll('.typewriter-text').forEach(startTypewriter);
     };
-    
+      
     const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
     async function startTypewriter(element) {
-        if (element.dataset.typing === 'true') return; // Prevent re-initialization
+        if (element.dataset.typing === 'true') return;
         element.dataset.typing = 'true';
 
         const text = element.dataset.text;
-        
-        while (true) {
-            // Typing
-            for (let i = 0; i < text.length; i++) {
-                element.textContent = text.substring(0, i + 1);
-                await sleep(120); // Typing speed
+          
+        while (document.body.contains(element)) {
+            for (let i = 0; i <= text.length; i++) {
+                if (!document.body.contains(element)) return;
+                element.textContent = text.substring(0, i);
+                await sleep(100 + Math.random() * 50); 
             }
-
-            await sleep(2000); // Pause after typing
-
-            // Deleting
-            for (let i = text.length; i > 0; i--) {
-                element.textContent = text.substring(0, i - 1);
-                await sleep(70); // Deleting speed
+            await sleep(3000); 
+            for (let i = text.length; i >= 0; i--) {
+                if (!document.body.contains(element)) return;
+                element.textContent = text.substring(0, i);
+                await sleep(50); 
             }
-
-            await sleep(500); // Pause after deleting
+            await sleep(500); 
         }
     }
 
+    // 2. SMOOTH FILTERING TRANSITION
     const updateCards = () => {
       const searchTerm = searchInput.value.toLowerCase();
       let filteredMembers = [];
@@ -667,7 +1072,20 @@
         );
       }
 
-      renderProfileCards(filteredMembers);
+      // Fade out current cards
+      const currentCards = document.querySelectorAll('.profile-card-container');
+      if(currentCards.length > 0) {
+          currentCards.forEach(card => {
+              card.style.opacity = '0';
+              card.style.transform = 'scale(0.9)';
+          });
+          // Wait for fade out before rendering new cards
+          setTimeout(() => {
+              renderProfileCards(filteredMembers);
+          }, 300); 
+      } else {
+          renderProfileCards(filteredMembers);
+      }
     };
 
     const handleFilterClick = (category) => {
@@ -675,9 +1093,9 @@
       filterButtons.forEach(btn => {
         if (btn.dataset.category === category) {
           btn.classList.remove('hover:bg-white/10', 'text-gray-200');
-          btn.classList.add('bg-fuchsia-600/80', 'text-white');
+          btn.classList.add('bg-fuchsia-600/80', 'text-white', 'shadow-lg', 'shadow-fuchsia-500/30');
         } else {
-          btn.classList.remove('bg-fuchsia-600/80', 'text-white');
+          btn.classList.remove('bg-fuchsia-600/80', 'text-white', 'shadow-lg', 'shadow-fuchsia-500/30');
           btn.classList.add('hover:bg-white/10', 'text-gray-200');
         }
       });
@@ -692,6 +1110,12 @@
           cardContainer.classList.toggle('is-flipped');
         });
       });
+      // Prevent flip when clicking AR button
+      document.querySelectorAll('.ar-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+          });
+      });
     };
 
     filterButtons.forEach(button => {
@@ -701,16 +1125,26 @@
       });
     });
 
-    searchInput.addEventListener('keyup', updateCards);
+    // Debounce search input for better performance
+    let searchTimeout;
+    searchInput.addEventListener('keyup', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(updateCards, 300);
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
+        // Initial render
         handleFilterClick('all');
 
         const testerSelect = document.getElementById('tester-select');
         const qrcodeContainer = document.getElementById('qrcode');
+        
+        qrcodeContainer.innerHTML = '';
+
         let qrcode = new QRCode(qrcodeContainer, {
-            width: 150,
-            height: 150,
+            width: 104,
+            height: 104,
+            correctLevel : QRCode.CorrectLevel.H
         });
 
         function generateQR(link) {
@@ -720,7 +1154,7 @@
         testerSelect.addEventListener('change', (e) => {
             generateQR(e.target.value);
         });
-        
+          
         generateQR(testerSelect.value);
 
         document.getElementById('select-now-btn').addEventListener('click', () => {
@@ -729,16 +1163,26 @@
 
         document.getElementById('download-qr-btn').addEventListener('click', () => {
             const qrImage = qrcodeContainer.querySelector('img');
-            const link = document.createElement('a');
-            link.download = 'whatsapp-qr-code.png';
-            link.href = qrImage.src;
-            link.click();
+            const qrCanvas = qrcodeContainer.querySelector('canvas');
+
+            let dataUrl = '';
+            if (qrImage && qrImage.src && qrImage.src.startsWith('data:')) {
+                dataUrl = qrImage.src;
+            } else if (qrCanvas) {
+                dataUrl = qrCanvas.toDataURL("image/png");
+            }
+
+            if (dataUrl) {
+                const link = document.createElement('a');
+                const selectedName = testerSelect.options[testerSelect.selectedIndex].text;
+                link.download = `WA-QR-${selectedName}.png`;
+                link.href = dataUrl;
+                link.click();
+            } else {
+                alert("QR Code belum siap diunduh. Silakan tunggu sebentar.");
+            }
         });
     });
   </script>
 </body>
-</ht
-
-
-
-
+</html>

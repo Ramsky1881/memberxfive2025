@@ -1,0 +1,378 @@
+:root {
+      --neon-pink: #ff00ff;
+      --neon-cyan: #00ffff;
+      --cyber-bg: #0a0a0a;
+      --cyber-primary: #f0f;
+      --cyber-secondary: #0ff;
+      --dark-bg: #0d1117;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background-color: var(--dark-bg);
+      min-height: 100vh;
+      color: #eee;
+      overflow-x: hidden;
+      /* 3. CUSTOM CURSOR (Visual Dasar) */
+      cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300ffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z'/></svg>") 0 0, crosshair;
+    }
+
+    .cyberpunk-font {
+        font-family: 'VT323', monospace;
+    }
+
+    h1, h2, h3 { font-family: 'Orbitron', sans-serif; }
+
+    .neon-text {
+      color: var(--neon-cyan);
+      text-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
+    }
+
+    /* --- 1. CUSTOM SCROLLBAR --- */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #0a0a0a;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(var(--cyber-secondary), var(--cyber-primary));
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--neon-pink);
+    }
+
+    /* --- 2. PRELOADER --- */
+    #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.5s ease-out;
+    }
+    .scanner {
+        width: 100%;
+        height: 4px;
+        background: var(--neon-cyan);
+        box-shadow: 0 0 10px var(--neon-cyan);
+        animation: scan 2s infinite linear;
+        position: absolute;
+        top: 0;
+    }
+    .loader-text {
+        font-family: 'VT323', monospace;
+        font-size: 2rem;
+        color: var(--neon-cyan);
+        letter-spacing: 5px;
+        animation: blink 1s infinite;
+    }
+    @keyframes scan {
+        0% { top: 0%; opacity: 0; }
+        50% { opacity: 1; }
+        100% { top: 100%; opacity: 0; }
+    }
+
+    /* --- 3. CURSOR TRAIL EFFECT --- */
+    .cursor-trail {
+        width: 8px;
+        height: 8px;
+        background: var(--neon-cyan);
+        border-radius: 50%;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.8;
+        transition: transform 0.1s, opacity 0.3s;
+        box-shadow: 0 0 8px var(--neon-cyan);
+    }
+
+    /* --- 4. GLITCH TITLE --- */
+    .glitch-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+    .glitch {
+        position: relative;
+        color: var(--neon-cyan);
+    }
+    .glitch::before, .glitch::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .glitch::before {
+        left: 2px; text-shadow: -1px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim 5s infinite linear alternate-reverse;
+    }
+    .glitch::after {
+        left: -2px; text-shadow: -1px 0 #00fff9; clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim2 5s infinite linear alternate-reverse;
+    }
+    @keyframes glitch-anim {
+        0% { clip: rect(36px, 9999px, 9px, 0); }
+        100% { clip: rect(11px, 9999px, 80px, 0); }
+    }
+    @keyframes glitch-anim2 {
+        0% { clip: rect(16px, 9999px, 68px, 0); }
+        100% { clip: rect(2px, 9999px, 64px, 0); }
+    }
+
+    /* --- 5. GLITCH IMAGE HOVER (ZOOM + RGB SPLIT) --- */
+    .img-glitch-hover {
+        transition: all 0.3s ease-out;
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+    }
+    .profile-card-container:hover .img-glitch-hover {
+        transform: scale(1.05);
+        filter: drop-shadow(-4px -4px 0px rgba(255, 0, 255, 0.6)) drop-shadow(4px 4px 0px rgba(0, 255, 255, 0.6));
+    }
+
+    /* --- 6. BACKGROUND PARTICLES CANVAS --- */
+    #particles-canvas {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: -1;
+        background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
+    }
+
+    /* --- 7. BACK TO TOP BUTTON --- */
+    #back-to-top {
+        position: fixed; bottom: 30px; right: 30px;
+        background: rgba(0, 0, 0, 0.8);
+        border: 2px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        width: 50px; height: 50px;
+        border-radius: 50%;
+        display: flex; justify-content: center; align-items: center;
+        cursor: pointer; opacity: 0; visibility: hidden;
+        transition: all 0.3s ease; z-index: 50;
+        box-shadow: 0 0 10px var(--neon-cyan);
+    }
+    #back-to-top:hover {
+        background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px var(--neon-cyan);
+    }
+    #back-to-top.show { opacity: 1; visibility: visible; }
+
+    /* --- 8. TOAST NOTIFICATION --- */
+    #toast {
+        visibility: hidden;
+        min-width: 250px;
+        background-color: rgba(0, 0, 0, 0.9);
+        border: 1px solid var(--neon-pink);
+        color: #fff;
+        text-align: center;
+        border-radius: 4px;
+        padding: 16px;
+        position: fixed;
+        z-index: 100;
+        left: 50%;
+        bottom: 30px;
+        transform: translateX(-50%);
+        box-shadow: 0 0 15px var(--neon-pink);
+        font-family: 'Orbitron', sans-serif;
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+    #toast.show {
+        visibility: visible;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    }
+    @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+    @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+    /* --- 9. RECRUITMENT WIDGET (BLINKING) --- */
+    .status-indicator {
+        display: inline-block;
+        width: 10px; height: 10px;
+        border-radius: 50%;
+        background-color: #00ff00;
+        margin-right: 8px;
+        box-shadow: 0 0 10px #00ff00;
+        animation: blink-status 1.5s infinite;
+    }
+    @keyframes blink-status {
+        0% { opacity: 1; box-shadow: 0 0 5px #00ff00; }
+        50% { opacity: 0.3; box-shadow: 0 0 0 #00ff00; }
+        100% { opacity: 1; box-shadow: 0 0 5px #00ff00; }
+    }
+
+    /* --- 10. SCROLL REVEAL ANIMATION CLASS --- */
+    .reveal-card {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s cubic-bezier(0.5, 0, 0, 1);
+    }
+    .reveal-card.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* --- 11. AR BUTTON STYLE --- */
+    .ar-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-family: 'Orbitron', sans-serif;
+        cursor: pointer;
+        z-index: 20;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .ar-btn:hover {
+        background: var(--neon-cyan);
+        color: #000;
+        box-shadow: 0 0 15px var(--neon-cyan);
+        transform: scale(1.05);
+    }
+
+    /* --- AUGMENTED UI & LAYOUT --- */
+    .cyber-aug-configuration {
+      --aug-tr: 15px; --aug-bl: 30px; --aug-br: 15px; --aug-tl: 10px;
+      --aug-border-all: 2px; --aug-border-bg: var(--cyber-primary);
+      --aug-inlay-all: 0px; --aug-inlay-opacity: 0.98;
+    }
+
+    .cyber-section {
+        padding: 1.5rem; margin-bottom: 2.5rem;
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        --aug-inlay-bg: rgba(10, 10, 10, 0.8);
+        backdrop-filter: blur(5px);
+    }
+    .cyber-select {
+        background: #1a1a1a; border: 1px solid var(--cyber-secondary); color: var(--cyber-secondary);
+        box-shadow: 0 0 5px var(--cyber-secondary);
+    }
+    .cyber-button {
+        background: transparent; border: 2px solid var(--cyber-secondary); color: var(--cyber-secondary);
+        text-transform: uppercase; transition: all 0.3s ease; cursor: pointer;
+        text-shadow: 0 0 5px var(--cyber-secondary); box-shadow: 0 0 10px var(--cyber-secondary);
+    }
+    .cyber-button:hover {
+        background: var(--cyber-secondary); color: var(--cyber-bg); box-shadow: 0 0 20px var(--cyber-secondary);
+    }
+
+    #qrcode {
+        border: 4px solid var(--cyber-primary); padding: 8px; background: white;
+        margin: 0 auto;
+    }
+    #qrcode img, #qrcode canvas { width: 100% !important; height: 100% !important; }
+
+    .marquee-container {
+        width: 100%; background-color: #990000; color: white; overflow: hidden;
+        white-space: nowrap; box-shadow: 0 2px 15px rgba(255, 0, 0, 0.5);
+        border-top: 1px solid #ff0000; border-bottom: 1px solid #ff0000;
+        position: relative; z-index: 10;
+    }
+    .marquee-text {
+        display: inline-block; padding: 6px 0; font-family: 'Orbitron', sans-serif;
+        font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;
+        animation: marquee-scroll 25s linear infinite;
+    }
+    @keyframes marquee-scroll { from { transform: translateX(100vw); } to { transform: translateX(-100%); } }
+
+    /* CARD STYLES */
+    .profile-card-container {
+      perspective: 1200px; height: 450px; position: relative;
+    }
+    .profile-card-inner {
+      position: absolute; inset: 0; transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+      transform-style: preserve-3d;
+    }
+    .profile-card-container.is-flipped .profile-card-inner { transform: rotateY(180deg); }
+
+    .profile-card-face {
+      position: absolute; width: 100%; height: 100%;
+      -webkit-backface-visibility: hidden; backface-visibility: hidden;
+      overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: translateZ(0);
+    }
+
+    .profile-card-front { --aug-inlay-bg: #1a1a1a; }
+    .profile-card-front img.main-photo {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        object-fit: cover; object-position: center top; z-index: 0;
+    }
+    .profile-card-front .overlay {
+        position: absolute; inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, rgba(0,0,0,0.6) 40%, transparent 100%);
+        z-index: 1;
+    }
+    .profile-card-front > .content-container {
+      position: relative; z-index: 2; width: 100%; height: 100%; padding: 1.25rem;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      align-items: flex-start; text-align: left;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* --- 4. GLASSMORPHISM PADA KARTU BELAKANG --- */
+    .profile-card-back {
+      transform: rotateY(180deg);
+      /* Background semi-transparan dengan blur */
+      --aug-inlay-bg: rgba(20, 20, 30, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 1.5rem; justify-content: space-between; z-index: 5;
+    }
+
+    .ghost-btn {
+        position: relative; border: none; color: white; background: transparent;
+        transition: transform 0.3s ease; overflow: hidden; z-index: 1; cursor: pointer;
+    }
+    .ghost-btn::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), #8A2BE2, var(--neon-cyan));
+        background-size: 300% 100%; z-index: -2;
+        transition: all 0.5s ease; animation: moveGradient 4s linear infinite;
+    }
+    .ghost-btn::after {
+        content: ''; position: absolute; top: 2px; left: 2px;
+        width: calc(100% - 4px); height: calc(100% - 4px);
+        background: #161b22; z-index: -1; border-radius: 9999px;
+    }
+    @keyframes moveGradient { 0% { background-position: 0% 50%; } 100% { background-position: 150% 50%; } }
+    .ghost-btn:hover {
+        transform: scale(1.05); box-shadow: 0 0 15px var(--neon-pink), 0 0 25px var(--neon-pink);
+    }
+    .light-sweep {
+        position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transform: skewX(-25deg); transition: left 0.7s ease-in-out;
+    }
+    .ghost-btn:hover .light-sweep { left: 150%; }
+
+    .typewriter-text::after {
+      content: '|'; display: inline-block; vertical-align: baseline;
+      animation: blink-caret .75s step-end infinite; color: var(--neon-cyan);
+    }
+    @keyframes blink-caret { from, to { opacity: 1; } 50% { opacity: 0; } }
+
+    .copy-btn {
+        transition: color 0.2s;
+    }
+    .copy-btn:hover {
+        color: var(--neon-cyan);
+    }
+    .copy-btn:active {
+        transform: scale(0.9);
+    }

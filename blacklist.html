@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XFiveCommunity - Blacklist</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Augmented UI -->
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/augmented-ui@2/augmented-ui.min.css">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="text-gray-200">
+
+  <!-- BACKGROUND PARTICLES -->
+  <canvas id="particles-canvas"></canvas>
+
+  <header class="sticky top-0 bg-black/60 backdrop-blur-md border-b border-white/10 z-20">
+    <nav class="container mx-auto px-4 py-4 flex flex-col gap-4">
+      <div class="flex flex-col sm:flex-row justify-between items-center w-full gap-3">
+        <!-- GLITCH TITLE -->
+        <h1 class="text-xl sm:text-2xl font-bold tracking-wider glitch-wrapper">
+            <a href="index.html"><span class="glitch" data-text="XFiveCommunity">XFiveCommunity</span></a>
+        </h1>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container mx-auto px-6 pt-8 pb-16 relative z-10">
+    <div class="cyber-section cyberpunk-font cyber-aug-configuration" data-augmented-ui="tl-clip tr-clip bl-clip br-clip both">
+        <h2 class="cyber-title text-2xl mb-4">Blacklist & Out Member</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-fuchsia-500/50">
+                        <th class="p-4">Nama</th>
+                        <th class="p-4">Nickname</th>
+                        <th class="p-4">Jenis Pelanggaran</th>
+                        <th class="p-4">Durasi Bergabung Kembali</th>
+                    </tr>
+                </thead>
+                <tbody id="blacklist-table-body">
+                    <!-- Data akan diisi oleh JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-8 mt-8 border-t border-white/10 relative z-10 bg-black/80">
+    <p class="text-gray-500 text-sm">&copy; 2025 XFiveCommunity. All rights reserved.</p>
+  </footer>
+
+  <script src="js/blacklist-members.js"></script>
+  <script src="js/blacklist.js"></script>
+</body>
+</html>

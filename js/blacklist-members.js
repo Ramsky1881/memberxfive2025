@@ -1,16 +1,22 @@
 const blacklistMembers = [
   {
-    nama: "Member Satu",
-    nickname: "Satu",
-    pelanggaran: "Melanggar aturan komunitas",
-    outDate: "2025-10-19",
+    nama: "Aldy",
+    nickname: "dxhmm-X5",
+    pelanggaran: "Out community tidak ada alasan",
+    outDate: "2025-07-09",
     duration: 3 // Durasi dalam bulan
   },
   {
-    nama: "Member Dua",
-    nickname: "Dua",
-    pelanggaran: "Penggunaan program ilegal",
-    outDate: "2025-09-01",
-    duration: "permanent" // Blacklist permanen
-  }
+    nama: "Diah",
+    nickname: "ImperfectX5",
+    pelanggaran: "Out community tidak ada alasan",
+    outDate: "2025-09-03",
+    duration: 3 // Durasi dalam bulan
+  },
+  {
+    nama: "Yuliana",
+    nickname: "-HoliciaX5-",
+    pelanggaran: "Out community putus cinta dengan Sadam",
+    outDate: "2025-09-020",
+    duration: 3 // Durasi dalam bulan
 ];

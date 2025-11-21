@@ -422,9 +422,10 @@
         font-size: 14px;
       }
       .profile-card-container {
-        /* Izinkan tinggi otomatis menyesuaikan konten */
-        height: auto;
-        min-height: 400px;
+        height: 420px; /* Consistent height for smooth flip animation */
+      }
+      .profile-card-back {
+        overflow-y: auto; /* Scroll if content overflows */
       }
       .profile-card-front > .content-container {
         padding: 1rem;

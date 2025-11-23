@@ -67,6 +67,6 @@ function renderBlacklistMember(row, member) {
     const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
-    timerCell.textContent = `${days}h ${hours}j ${minutes}m ${seconds}d`;
+    timerCell.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
   }, 1000);
 }

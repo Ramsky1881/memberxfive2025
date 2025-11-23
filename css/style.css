@@ -495,8 +495,8 @@
     }
 /* From Uiverse.io by Lakshay-art */
 .grid {
-  height: 800px;
-  width: 800px;
+  height: 350px;
+  width: 350px;
   background-image: linear-gradient(to right, #0f0f10 1px, transparent 1px),
     linear-gradient(to bottom, #0f0f10 1px, transparent 1px);
   background-size: 1rem 1rem;
@@ -553,6 +553,14 @@
   align-items: center;
   justify-content: center;
   position: relative; /* Contain absolute children */
+  transform: scale(0.75);
+  transform-origin: center right;
+}
+
+@media (max-width: 640px) {
+  #poda {
+    transform-origin: center center;
+  }
 }
 .input::placeholder {
   color: #c0b9c0;

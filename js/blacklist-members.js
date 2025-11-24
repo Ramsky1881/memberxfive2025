@@ -243,5 +243,19 @@ const blacklistMembers = [
     pelanggaran: "Out Community",
     outDate: "2025-11-20",
     duration: 3 // Durasi dalam bulan
+  },
+  {
+    nama: "Clay",
+    nickname: "-Druig-X5",
+    pelanggaran: "Out Community",
+    outDate: "2025-11-21",
+    duration: 3 // Durasi dalam bulan
+  },
+  {
+    nama: "Mavis",
+    nickname: "DunkinX5-FLz",
+    pelanggaran: "Out Community",
+    outDate: "2025-11-24",
+    duration: 3 // Durasi dalam bulan
   }
 ];

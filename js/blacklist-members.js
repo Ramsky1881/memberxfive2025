@@ -252,7 +252,7 @@ const blacklistMembers = [
     duration: 3 // Durasi dalam bulan
   },
   {
-    nama: "Mavis",
+    nama: "Maviss",
     nickname: "DunkinX5-FLz",
     pelanggaran: "Out Community",
     outDate: "2025-11-24",

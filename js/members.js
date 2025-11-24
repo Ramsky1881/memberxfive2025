@@ -1,4 +1,4 @@
-httpsconst members = [
+const members = [
       // Dewan Community
       { name: 'Ramsky', title: 'Owner Community', avatar: 'https://www.studiointermedia.com/images/2025/08/02/Ramsky.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/02/Ramsky.jpeg', nickname: '-RamsX5', domisili: 'Bogor', dob: '7 Juni', gender: '-', category: 'dewan staff' },
       { name: 'Fadhel', title: 'Leader Community', avatar: 'https://www.studiointermedia.com/images/2025/08/01/1da1eafb-8bc8-48a9-9869-26b83113e0f6.jpeg', bgImage: 'https://www.studiointermedia.com/images/2025/08/01/1da1eafb-8bc8-48a9-9869-26b83113e0f6.jpeg', nickname: '-FaskyX5', domisili: 'Medan', dob: '08 Oktober', gender: '-', category: 'dewan staff' },

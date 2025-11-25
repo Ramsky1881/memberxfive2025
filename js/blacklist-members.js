@@ -212,7 +212,7 @@ const blacklistMembers = [
   {
     nama: "Ara",
     nickname: "LovemoreX5-666",
-    pelanggaran: "Out Community putus cinta dengan Fasky",
+    pelanggaran: "Out Community",
     outDate: "2025-11-12",
     duration: 3 // Durasi dalam bulan
   },

@@ -47,6 +47,23 @@
         <h2 class="cyber-title text-3xl mb-4 text-center font-bold">
             <span class="blinking-red">Blacklist</span> & <span class="blinking-yellow">Out Community</span>
         </h2>
+
+        <!-- Controls: Search & Filters -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <div class="w-full md:w-1/3 relative">
+                <input type="text" id="searchInput" placeholder="Search name, nickname..."
+                    class="w-full bg-black/50 border border-fuchsia-500/30 text-white px-4 py-2 rounded focus:outline-none focus:border-fuchsia-500 focus:shadow-[0_0_10px_rgba(217,70,239,0.5)] transition-all">
+                <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
+            </div>
+
+            <div class="flex flex-wrap gap-2 justify-center" id="filterButtons">
+                <button data-filter="all" class="filter-btn px-4 py-2 bg-fuchsia-900/30 border border-fuchsia-500/50 text-fuchsia-300 hover:bg-fuchsia-500/20 hover:text-white transition-all border-b-2 border-b-fuchsia-500">All</button>
+                <button data-filter="blacklist" class="filter-btn px-4 py-2 bg-red-900/30 border border-red-500/50 text-red-300 hover:bg-red-500/20 hover:text-white transition-all">Blacklist</button>
+                <button data-filter="out-community" class="filter-btn px-4 py-2 bg-yellow-900/30 border border-yellow-500/50 text-yellow-300 hover:bg-yellow-500/20 hover:text-white transition-all">Out Community</button>
+                <button data-filter="warning" class="filter-btn px-4 py-2 bg-orange-900/30 border border-orange-500/50 text-orange-300 hover:bg-orange-500/20 hover:text-white transition-all">Warning</button>
+            </div>
+        </div>
+
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
@@ -62,6 +79,23 @@
                     <!-- Data akan diisi oleh JavaScript -->
                 </tbody>
             </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
+            <div class="flex items-center gap-2">
+                <span class="text-gray-400">Show</span>
+                <select id="rowsPerPage" class="bg-black/50 border border-fuchsia-500/30 text-white px-2 py-1 rounded focus:outline-none focus:border-fuchsia-500">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                </select>
+                <span class="text-gray-400">entries</span>
+            </div>
+
+            <div class="flex items-center gap-2" id="paginationControls">
+                <!-- Pagination buttons will be injected here -->
+            </div>
         </div>
     </div>
   </main>

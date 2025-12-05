@@ -255,14 +255,35 @@ const blacklistMembers = [
     nama: "Deni Setiawan",
     nickname: "TG-ForeverX5",
     pelanggaran: "Out Community",
-    outDate: "2025-11-29",
+    outDate: "2025-11-24",
     duration: 3 // Durasi dalam bulan
   },
   {
     nama: "Mira",
     nickname: "ceayX5",
     pelanggaran: "Out Community",
+    outDate: "2025-11-24",
+    duration: 3 // Durasi dalam bulan
+  },
+  {
+    nama: "Pram",
+    nickname: "JeannX5-",
+    pelanggaran: "Out Community",
     outDate: "2025-12-03",
+    duration: 3 // Durasi dalam bulan
+  },
+  {
+    nama: "Okta",
+    nickname: "myAstaroth-X5",
+    pelanggaran: "Out Community",
+    outDate: "2025-12-05",
+    duration: 3 // Durasi dalam bulan
+  },
+  {
+    nama: "Merlin",
+    nickname: "EdenX5-",
+    pelanggaran: "Out Community",
+    outDate: "2025-12-05",
     duration: 3 // Durasi dalam bulan
   }
 ];

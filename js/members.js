@@ -73,15 +73,15 @@ const members = [
       },
       {
             "name": "Fikri",
+            "nickname": "Taliban-X5",
             "title": "Staff Community",
-            "avatar": "https://www.studiointermedia.com/images/2025/11/24/Fikri.jpeg",
-            "bgImage": "https://www.studiointermedia.com/images/2025/11/24/Fikri.jpeg",
-            "nickname": "Eastern-X5",
-            "code": "FIKJA",
             "domisili": "Medan",
             "dob": "7 April",
             "gender": "-",
-            "category": "dewan staff"
+            "category": "dewan staff",
+            "code": "FIKJA",
+            "avatar": "https://www.studiointermedia.com/images/2025/11/24/Fikri.jpeg",
+            "bgImage": "https://www.studiointermedia.com/images/2025/11/24/Fikri.jpeg"
       },
       {
             "name": "Meylisa",

@@ -44,11 +44,17 @@ if (fs.existsSync(adminJsPath)) {
         console.warn('WARNING: GITHUB_TOKEN is not set in environment variables!');
     }
 
-    const adminUser = process.env.ADMIN_USERNAME || 'admin';
-    const adminPass = process.env.ADMIN_PASSWORD || 'password';
+    const adminUser = process.env.ADMIN_USERNAME;
+    const adminPass = process.env.ADMIN_PASSWORD;
 
-    if (!process.env.ADMIN_USERNAME) console.warn('WARNING: ADMIN_USERNAME is not set!');
-    if (!process.env.ADMIN_PASSWORD) console.warn('WARNING: ADMIN_PASSWORD is not set!');
+    if (!adminUser) {
+        console.error('ERROR: ADMIN_USERNAME is not set in environment variables!');
+        process.exit(1);
+    }
+    if (!adminPass) {
+        console.error('ERROR: ADMIN_PASSWORD is not set in environment variables!');
+        process.exit(1);
+    }
 
     // Replace Token
     content = content.replace('__GITHUB_TOKEN__', token);

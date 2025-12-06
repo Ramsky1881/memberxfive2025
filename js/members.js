@@ -1,6 +1,6 @@
 const members = [
       {
-            "name": "Ramskyy",
+            "name": "Ramsky",
             "nickname": "-RamsX5",
             "title": "Owner Community",
             "domisili": "Bogor",
@@ -12,16 +12,16 @@ const members = [
             "bgImage": "https://www.studiointermedia.com/images/2025/08/02/Ramsky.jpeg"
       },
       {
-            "name": "Fadhel",
-            "title": "Leader Community",
-            "avatar": "https://www.studiointermedia.com/images/2025/08/01/1da1eafb-8bc8-48a9-9869-26b83113e0f6.jpeg",
-            "bgImage": "https://www.studiointermedia.com/images/2025/08/01/1da1eafb-8bc8-48a9-9869-26b83113e0f6.jpeg",
+            "name": "Fadhel S Demon",
             "nickname": "-FaskyX5",
-            "code": "FADA5",
+            "title": "Leader Community",
             "domisili": "Medan",
             "dob": "08 Oktober",
             "gender": "-",
-            "category": "dewan staff"
+            "category": "dewan staff",
+            "code": "FADA5",
+            "avatar": "https://www.studiointermedia.com/images/2025/08/01/1da1eafb-8bc8-48a9-9869-26b83113e0f6.jpeg",
+            "bgImage": "https://www.studiointermedia.com/images/2025/08/01/1da1eafb-8bc8-48a9-9869-26b83113e0f6.jpeg"
       },
       {
             "name": "Joko",

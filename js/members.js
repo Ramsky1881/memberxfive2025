@@ -2732,8 +2732,8 @@ const members = [
             "gender": "male",
             "category": "member",
             "code": "MAU7K",
-            "avatar": "https://www.studiointermedia.com/images/2025/12/06/6586fa1f-803f-4ab4-9df8-2652097925fe.jpeg.jpeg",
-            "bgImage": "https://www.studiointermedia.com/images/2025/12/06/6586fa1f-803f-4ab4-9df8-2652097925fe.jpeg"
+            "avatar": "https://www.studiointermedia.com/images/2025/12/06/maulsolar.jpeg",
+            "bgImage": "https://www.studiointermedia.com/images/2025/12/06/maulsolar.jpeg"
       },
       {
             "name": "Nanda",

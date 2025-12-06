@@ -901,15 +901,15 @@ const members = [
       },
       {
             "name": "Agnes",
+            "nickname": "Fey-X5",
             "title": "Member Community",
-            "avatar": "https://www.studiointermedia.com/images/2025/11/08/Agnes.jpeg",
-            "bgImage": "https://www.studiointermedia.com/images/2025/11/08/Agnes.jpeg",
-            "nickname": "-Agnesfy-X5",
-            "code": "AGNYS",
             "domisili": "Laos",
             "dob": "21 Maret",
             "gender": "female",
-            "category": "member"
+            "category": "member",
+            "code": "AGNYS",
+            "avatar": "https://www.studiointermedia.com/images/2025/11/08/Agnes.jpeg",
+            "bgImage": "https://www.studiointermedia.com/images/2025/11/08/Agnes.jpeg"
       },
       {
             "name": "Aya",
@@ -2725,15 +2725,15 @@ const members = [
       },
       {
             "name": "Maul",
-            "title": "Member Community",
-            "avatar": "https://www.studiointermedia.com/images/2025/12/05/maulsolar.jpeg",
-            "bgImage": "https://www.studiointermedia.com/images/2025/12/05/maulsolar.jpeg",
             "nickname": "BeethovenX5",
-            "code": "MAU7K",
+            "title": "Member Community",
             "domisili": "Jakarta Selatan",
             "dob": "21 July",
             "gender": "male",
-            "category": "member"
+            "category": "member",
+            "code": "MAU7K",
+            "avatar": "https://www.studiointermedia.com/images/2025/12/06/6586fa1f-803f-4ab4-9df8-2652097925fe.jpeg",
+            "bgImage": "https://www.studiointermedia.com/images/2025/12/06/6586fa1f-803f-4ab4-9df8-2652097925fe.jpeg"
       },
       {
             "name": "Nanda",

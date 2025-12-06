@@ -285,12 +285,5 @@ const blacklistMembers = [
             "pelanggaran": "Out Community",
             "outDate": "2025-12-05",
             "duration": 3
-      },
-      {
-            "nama": "puspachu",
-            "nickname": "yan-yX ",
-            "pelanggaran": "CPL BARU FADEL",
-            "outDate": "2025-12-06",
-            "duration": "permanent"
       }
 ];

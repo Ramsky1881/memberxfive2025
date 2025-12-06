@@ -4,11 +4,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const itemsPerPage = 10;
     let filteredMembers = [...members]; // Start with all members
     let editModeIndex = -1;
+
+    // Blacklist Vars
+    let filteredBlacklist = [...blacklistMembers];
+    let editBlacklistIndex = -1;
+
     let sessionToken = null; // Store session token here
 
     // --- DOM ELEMENTS ---
     const loginOverlay = document.getElementById("login-overlay");
     const dashboardContent = document.getElementById("dashboard-content");
+
+    // Navigation
+    const navDashboard = document.getElementById("nav-dashboard");
+    const navBlacklist = document.getElementById("nav-blacklist");
+    const sectionMembers = document.getElementById("section-members");
+    const sectionBlacklist = document.getElementById("section-blacklist");
     const usernameInput = document.getElementById("username");
     const passwordInput = document.getElementById("password");
     const loginBtn = document.getElementById("login-btn");
@@ -35,6 +46,51 @@ document.addEventListener("DOMContentLoaded", () => {
     const saveGithubBtn = document.getElementById("save-github-btn");
     const cancelGithubBtn = document.getElementById("cancel-github");
     const confirmGithubBtn = document.getElementById("confirm-github");
+
+    // Blacklist DOM
+    const blacklistTableBody = document.getElementById("blacklist-table-body");
+    const blacklistSearch = document.getElementById("blacklistSearch");
+    const addBlacklistBtn = document.getElementById("add-blacklist-btn");
+    const blacklistModal = document.getElementById("blacklist-modal");
+    const closeBlacklistModalBtn = document.getElementById("close-blacklist-modal");
+    const cancelBlacklistBtn = document.getElementById("cancel-blacklist-btn");
+    const blacklistForm = document.getElementById("blacklist-form");
+    const blacklistModalTitle = document.getElementById("blacklist-modal-title");
+
+    // --- NAVIGATION LOGIC ---
+    navDashboard.addEventListener("click", (e) => {
+        e.preventDefault();
+        showSection('dashboard');
+    });
+
+    navBlacklist.addEventListener("click", (e) => {
+        e.preventDefault();
+        showSection('blacklist');
+    });
+
+    function showSection(section) {
+        if (section === 'dashboard') {
+            sectionMembers.classList.remove("hidden");
+            sectionBlacklist.classList.add("hidden");
+
+            navDashboard.classList.add("border-cyan-400", "text-cyan-400");
+            navDashboard.classList.remove("border-transparent", "text-gray-400");
+
+            navBlacklist.classList.remove("border-red-500", "text-red-400");
+            navBlacklist.classList.add("border-transparent", "text-gray-400");
+        } else {
+            sectionMembers.classList.add("hidden");
+            sectionBlacklist.classList.remove("hidden");
+
+            navDashboard.classList.remove("border-cyan-400", "text-cyan-400");
+            navDashboard.classList.add("border-transparent", "text-gray-400");
+
+            navBlacklist.classList.add("border-red-500", "text-red-400");
+            navBlacklist.classList.remove("border-transparent", "text-gray-400");
+
+            renderBlacklistTable();
+        }
+    }
 
     // --- LOGIN LOGIC ---
     loginBtn.addEventListener("click", async () => {
@@ -89,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCharts();
         renderBirthdays();
         renderTable();
+        renderBlacklistTable();
     }
 
     // --- BIRTHDAY LOGIC ---
@@ -362,6 +419,166 @@ document.addEventListener("DOMContentLoaded", () => {
         renderTable();
     });
 
+    blacklistSearch.addEventListener("input", (e) => {
+        const term = e.target.value.toLowerCase();
+        filteredBlacklist = blacklistMembers.filter(m =>
+            m.nama.toLowerCase().includes(term) ||
+            m.nickname.toLowerCase().includes(term) ||
+            m.pelanggaran.toLowerCase().includes(term)
+        );
+        renderBlacklistTable();
+    });
+
+    // --- BLACKLIST LOGIC ---
+    function renderBlacklistTable() {
+        blacklistTableBody.innerHTML = "";
+        filteredBlacklist.forEach((m, index) => {
+            const actualIndex = blacklistMembers.indexOf(m);
+            const tr = document.createElement("tr");
+            tr.className = "border-b border-gray-800 hover:bg-white/5 transition-colors";
+
+            let durationDisplay = m.duration === 'permanent' ?
+                '<span class="text-red-500 font-bold">PERMANENT</span>' :
+                `${m.duration} Months`;
+
+            // Use textContent for user inputs to prevent XSS
+            const nameDiv = document.createElement('div');
+            nameDiv.className = "font-bold text-white";
+            nameDiv.textContent = m.nama;
+
+            const nickDiv = document.createElement('div');
+            nickDiv.className = "text-xs text-gray-400";
+            nickDiv.textContent = m.nickname;
+
+            const reasonTd = document.createElement('td');
+            reasonTd.className = "p-3 text-gray-300 text-xs max-w-xs break-words";
+            reasonTd.textContent = m.pelanggaran;
+
+            // Name Cell
+            const nameTd = document.createElement('td');
+            nameTd.className = "p-3";
+            nameTd.appendChild(nameDiv);
+            nameTd.appendChild(nickDiv);
+
+            tr.appendChild(nameTd);
+            tr.appendChild(reasonTd);
+
+            // Safe HTML for known static structure
+            const otherCols = document.createElement('div'); // Temp container
+            // Note: outDate and duration are less risky but let's be safe
+
+            // Out Date Cell
+            const dateTd = document.createElement('td');
+            dateTd.className = "p-3 font-mono text-red-300";
+            dateTd.textContent = m.outDate;
+            tr.appendChild(dateTd);
+
+            // Duration Cell
+            const durationTd = document.createElement('td');
+            durationTd.className = "p-3 text-gray-300";
+            durationTd.innerHTML = durationDisplay; // durationDisplay contains HTML but it is controlled by us (PERMANENT or number)
+            tr.appendChild(durationTd);
+
+            // Actions Cell
+            const actionsTd = document.createElement('td');
+            actionsTd.className = "p-3 text-right";
+            actionsTd.innerHTML = `
+                <button class="text-red-400 hover:text-white mr-3" onclick="editBlacklistMember(${actualIndex})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="text-gray-400 hover:text-white" onclick="deleteBlacklistMember(${actualIndex})">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            tr.appendChild(actionsTd);
+
+            blacklistTableBody.appendChild(tr);
+        });
+    }
+
+    window.editBlacklistMember = (index) => {
+        const m = blacklistMembers[index];
+        editBlacklistIndex = index;
+        blacklistModalTitle.textContent = "EDIT BLACKLIST ENTRY";
+
+        document.getElementById("bl-name").value = m.nama;
+        document.getElementById("bl-nickname").value = m.nickname;
+        document.getElementById("bl-reason").value = m.pelanggaran;
+        document.getElementById("bl-outDate").value = m.outDate;
+
+        const isPerm = m.duration === 'permanent';
+        document.getElementById("bl-permanent").checked = isPerm;
+        document.getElementById("bl-duration").value = isPerm ? '' : m.duration;
+        document.getElementById("bl-duration").disabled = isPerm;
+
+        openBlacklistModal();
+    }
+
+    window.deleteBlacklistMember = (index) => {
+        if(confirm(`Remove ${blacklistMembers[index].nama} from blacklist?`)) {
+            blacklistMembers.splice(index, 1);
+            // Update filter list properly or just reset
+            blacklistSearch.value = "";
+            filteredBlacklist = [...blacklistMembers];
+            renderBlacklistTable();
+        }
+    }
+
+    // Modal Helpers
+    addBlacklistBtn.addEventListener("click", () => {
+        editBlacklistIndex = -1;
+        blacklistModalTitle.textContent = "ADD BLACKLIST ENTRY";
+        blacklistForm.reset();
+        document.getElementById("bl-duration").disabled = false;
+        openBlacklistModal();
+    });
+
+    function openBlacklistModal() {
+        blacklistModal.classList.remove("hidden");
+        setTimeout(() => blacklistModal.classList.add("active"), 10);
+    }
+
+    function closeBlacklistModal() {
+        blacklistModal.classList.remove("active");
+        setTimeout(() => blacklistModal.classList.add("hidden"), 300);
+    }
+
+    closeBlacklistModalBtn.addEventListener("click", closeBlacklistModal);
+    cancelBlacklistBtn.addEventListener("click", closeBlacklistModal);
+
+    // Form Logic
+    document.getElementById("bl-permanent").addEventListener("change", (e) => {
+        document.getElementById("bl-duration").disabled = e.target.checked;
+        if(e.target.checked) document.getElementById("bl-duration").value = '';
+    });
+
+    blacklistForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const isPerm = document.getElementById("bl-permanent").checked;
+        const durationVal = document.getElementById("bl-duration").value;
+
+        const entry = {
+            nama: document.getElementById("bl-name").value,
+            nickname: document.getElementById("bl-nickname").value,
+            pelanggaran: document.getElementById("bl-reason").value,
+            outDate: document.getElementById("bl-outDate").value,
+            duration: isPerm ? 'permanent' : parseInt(durationVal)
+        };
+
+        if (editBlacklistIndex >= 0) {
+            blacklistMembers[editBlacklistIndex] = entry;
+        } else {
+            blacklistMembers.push(entry);
+        }
+
+        closeBlacklistModal();
+        blacklistSearch.value = "";
+        filteredBlacklist = [...blacklistMembers];
+        renderBlacklistTable();
+    });
+
+
     // --- ADD / EDIT MEMBER ---
     window.editMember = (index) => {
         const m = members[index];
@@ -490,25 +707,16 @@ document.addEventListener("DOMContentLoaded", () => {
         confirmBtn.disabled = true;
 
         try {
-            // 1. Prepare Content
-            const fileContent = `const members = ${JSON.stringify(members, null, 6)};`;
+            // 1. Save Members
+            const membersContent = `const members = ${JSON.stringify(members, null, 6)};`;
 
-            // 2. Call Secure Backend
-            const res = await fetch('/.netlify/functions/save-github', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    content: fileContent,
-                    token: sessionToken
-                })
-            });
+            await saveFileToGithub('members', membersContent);
 
-            if (!res.ok) {
-                const errData = await res.json();
-                throw new Error(errData.body || "Server Error");
-            }
+            // 2. Save Blacklist
+            const blacklistContent = `const blacklistMembers = ${JSON.stringify(blacklistMembers, null, 6)};`;
+            await saveFileToGithub('blacklist', blacklistContent);
 
-            alert("Success! Data updated on GitHub securely.");
+            alert("Success! Both databases updated on GitHub securely.");
             githubModal.classList.remove("active");
             setTimeout(() => githubModal.classList.add("hidden"), 300);
 
@@ -520,5 +728,22 @@ document.addEventListener("DOMContentLoaded", () => {
             confirmBtn.disabled = false;
         }
     });
+
+    async function saveFileToGithub(type, content) {
+        const res = await fetch('/.netlify/functions/save-github', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: type, // 'members' or 'blacklist'
+                content: content,
+                token: sessionToken
+            })
+        });
+
+        if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.body || `Server Error saving ${type}`);
+        }
+    }
 
 });

@@ -7,7 +7,7 @@ exports.handler = async (event, context) => {
 
     try {
         const body = JSON.parse(event.body);
-        const { content, token: sessionToken } = body;
+        const { content, token: sessionToken, type } = body;
 
         if (!content || !sessionToken) {
             return { statusCode: 400, body: "Missing content or token" };
@@ -27,11 +27,21 @@ exports.handler = async (event, context) => {
             return { statusCode: 500, body: "Server configuration error: GitHub Token missing" };
         }
 
+        // Determine File Path based on 'type'
+        let filePath = 'js/members.js'; // default
+        if (type === 'blacklist') {
+            filePath = 'js/blacklist-members.js';
+        } else if (type === 'members') {
+            filePath = 'js/members.js';
+        } else if (type) {
+            // If type is provided but not matched, return error to prevent arbitrary writes
+            return { statusCode: 400, body: "Invalid file type specified" };
+        }
+
         // GitHub Config
         const owner = "Ramsky1881";
         const repo = "memberxfive2025";
-        const path = "js/members.js";
-        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
 
         // 1. Get current SHA
         const getRes = await fetch(url, {
@@ -64,7 +74,7 @@ exports.handler = async (event, context) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                message: "Update members via Admin Dashboard (Secure)",
+                message: `Update ${filePath} via Admin Dashboard (Secure)`,
                 content: contentEncoded,
                 sha: sha
             })

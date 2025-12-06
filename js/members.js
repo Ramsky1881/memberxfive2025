@@ -13,7 +13,7 @@ const members = [
       },
       {
             "name": "Fadhel S Demon",
-            "nickname": "-KEVINX5",
+            "nickname": "-FaskyX5",
             "title": "Leader Community",
             "domisili": "Medan",
             "dob": "08 Oktober",

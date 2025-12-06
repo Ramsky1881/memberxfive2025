@@ -1,7 +1,6 @@
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const sourceDir = path.join(__dirname, '../js');
 const tempDir = path.join(__dirname, '../temp_js');
@@ -14,11 +13,7 @@ if (fs.existsSync(tempDir)) {
 fs.mkdirSync(tempDir);
 
 console.log('Copying JS files...');
-// Simple copy function since shx isn't available in node script directly easily without import
-// We can use shell command or fs.cpSync (Node 16.7+)
 try {
-    // Using cp -r command via execSync for simplicity and cross-platform (mostly, assuming linux/mac env or git bash)
-    // But to be safe with cross-platform in node, let's use fs.
     const files = fs.readdirSync(sourceDir);
     files.forEach(file => {
         const srcFile = path.join(sourceDir, file);
@@ -26,47 +21,25 @@ try {
         if (fs.lstatSync(srcFile).isFile()) {
             fs.copyFileSync(srcFile, destFile);
         }
-        // If there are subdirectories, we would need recursive copy, but structure seems flat for now.
     });
 } catch (e) {
     console.error('Error copying files:', e);
     process.exit(1);
 }
 
-// 2. Inject Token
-console.log('Injecting GitHub Token...');
-const adminJsPath = path.join(tempDir, 'admin.js');
-if (fs.existsSync(adminJsPath)) {
-    let content = fs.readFileSync(adminJsPath, 'utf8');
-    const token = process.env.GITHUB_TOKEN || '';
+// 2. Secret Injection - REMOVED
+// We no longer inject secrets into the client-side code.
+// The placeholders (__ADMIN_USERNAME__, __GITHUB_TOKEN__, etc.) will remain in the source
+// but the new frontend logic won't use them (or will ignore them), or we should ensure
+// the source file doesn't have them anymore.
+//
+// Actually, since I'm updating js/admin.js in the next step to NOT use these placeholders,
+// this script just needs to copy files.
+//
+// However, if I leave the placeholders in js/admin.js until the next step, the build might fail
+// if I was relying on this script to clean them up.
+// But the plan is to update js/admin.js right after this.
+// So this script is now just a "prepare for obfuscation" script.
 
-    if (!token) {
-        console.warn('WARNING: GITHUB_TOKEN is not set in environment variables!');
-    }
-
-    const adminUser = process.env.ADMIN_USERNAME;
-    const adminPass = process.env.ADMIN_PASSWORD;
-
-    if (!adminUser) {
-        console.error('ERROR: ADMIN_USERNAME is not set in environment variables!');
-        process.exit(1);
-    }
-    if (!adminPass) {
-        console.error('ERROR: ADMIN_PASSWORD is not set in environment variables!');
-        process.exit(1);
-    }
-
-    // Replace Token
-    content = content.replace('__GITHUB_TOKEN__', token);
-
-    // Replace Credentials
-    // Use regex with global flag in case they appear multiple times, although logic suggests 2-3 times.
-    content = content.replace(/__ADMIN_USERNAME__/g, adminUser);
-    content = content.replace(/__ADMIN_PASSWORD__/g, adminPass);
-
-    fs.writeFileSync(adminJsPath, content, 'utf8');
-    console.log('Token and Credentials injected into temp_js/admin.js');
-} else {
-    console.error('Error: admin.js not found in temp directory');
-    process.exit(1);
-}
+console.log('Skipping secret injection (handled by Backend Functions now).');
+console.log('Ready for obfuscation.');

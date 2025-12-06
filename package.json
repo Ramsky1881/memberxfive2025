@@ -23,5 +23,8 @@
     "dotenv": "^17.2.3",
     "javascript-obfuscator": "^4.1.1",
     "shx": "^0.3.4"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0"
   }
 }

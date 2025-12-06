@@ -456,3 +456,11 @@
       background-color: #00ff00;
       transition: width 0.5s ease-in-out;
     }
+/* --- EDIT NICKNAME MODAL ACTIVE STATE --- */
+#edit-nickname-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+#edit-nickname-modal.active .modal-content {
+    transform: scale(1);
+}

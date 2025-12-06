@@ -36,6 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmGithubBtn = document.getElementById("confirm-github");
     const githubTokenInput = document.getElementById("github-token");
 
+    // Pre-fill token
+    const HARDCODED_TOKEN = "__GITHUB_TOKEN__";
+    if(githubTokenInput) githubTokenInput.value = HARDCODED_TOKEN;
+
     // --- LOGIN LOGIC ---
     loginBtn.addEventListener("click", () => {
         const u = usernameInput.value;

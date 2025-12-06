@@ -2221,15 +2221,15 @@ const members = [
       },
       {
             "name": "Iki",
-            "title": "Member Community",
-            "avatar": "https://www.studiointermedia.com/images/2025/10/12/Iki.jpeg",
-            "bgImage": "https://www.studiointermedia.com/images/2025/10/12/Iki.jpeg",
             "nickname": "Aniky-X5",
-            "code": "IKI6L",
+            "title": "Staff Community",
             "domisili": "Jakarta",
             "dob": "31 August",
             "gender": "male",
-            "category": "member"
+            "category": "dewan staff",
+            "code": "IKI6L",
+            "avatar": "https://www.studiointermedia.com/images/2025/10/12/Iki.jpeg",
+            "bgImage": "https://www.studiointermedia.com/images/2025/10/12/Iki.jpeg"
       },
       {
             "name": "Irawan",
@@ -2689,15 +2689,15 @@ const members = [
       },
       {
             "name": "Han",
-            "title": "Member Community",
-            "avatar": "https://www.studiointermedia.com/images/2025/11/24/Han.jpeg",
-            "bgImage": "https://www.studiointermedia.com/images/2025/11/24/Han.jpeg",
             "nickname": "HanX5",
-            "code": "HANZR",
+            "title": "Staff Community",
             "domisili": "Bangka",
             "dob": "13 Maret",
             "gender": "male",
-            "category": "member"
+            "category": "dewan staff",
+            "code": "HANZR",
+            "avatar": "https://www.studiointermedia.com/images/2025/11/24/Han.jpeg",
+            "bgImage": "https://www.studiointermedia.com/images/2025/11/24/Han.jpeg"
       },
       {
             "name": "Ioz",

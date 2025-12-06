@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const itemsPerPage = 10;
     let filteredMembers = [...members]; // Start with all members
     let editModeIndex = -1;
+    let sessionToken = null; // Store session token here
 
     // --- DOM ELEMENTS ---
     const loginOverlay = document.getElementById("login-overlay");
@@ -34,24 +35,35 @@ document.addEventListener("DOMContentLoaded", () => {
     const saveGithubBtn = document.getElementById("save-github-btn");
     const cancelGithubBtn = document.getElementById("cancel-github");
     const confirmGithubBtn = document.getElementById("confirm-github");
-    const githubTokenInput = document.getElementById("github-token");
-
-    // Pre-fill token
-    const HARDCODED_TOKEN = "__GITHUB_TOKEN__";
-    if(githubTokenInput) githubTokenInput.value = HARDCODED_TOKEN;
 
     // --- LOGIN LOGIC ---
-    loginBtn.addEventListener("click", () => {
+    loginBtn.addEventListener("click", async () => {
         const u = usernameInput.value;
         const p = passwordInput.value;
-        if ((u === "__ADMIN_USERNAME__" || u === "__ADMIN_PASSWORD__") && (p === "__ADMIN_PASSWORD__" || p === "__ADMIN_USERNAME__")) { // Allow swap just in case user got confused, strictly follow req though: u:adminxfive p:xfive2017boss
-           if (u === "__ADMIN_USERNAME__" && p === "__ADMIN_PASSWORD__") {
+
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+
+        try {
+            const res = await fetch('/.netlify/functions/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: u, password: p })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                sessionToken = data.token;
                 grantAccess();
-           } else {
-               showLoginError();
-           }
-        } else {
+            } else {
+                showLoginError();
+            }
+        } catch (e) {
+            console.error("Login error:", e);
             showLoginError();
+        } finally {
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Initialize';
         }
     });
 
@@ -67,6 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     logoutBtn.addEventListener("click", () => {
+        sessionToken = null;
         location.reload();
     });
 
@@ -79,15 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // --- BIRTHDAY LOGIC ---
+    let currentBirthdayMonthIndex = new Date().getMonth(); // Default to current month
+
     function renderBirthdays() {
         const birthdayList = document.getElementById("birthday-list");
         const monthLabel = document.getElementById("current-month-name");
-
-        const now = new Date();
-        const currentMonthIndex = now.getMonth(); // 0 = Jan, 11 = Dec
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-        monthLabel.textContent = monthNames[currentMonthIndex].toUpperCase();
 
         // Month parsing map (normalized to lowercase) -> index 0-11
         const monthMap = {
@@ -105,6 +114,14 @@ document.addEventListener("DOMContentLoaded", () => {
             "desember": 11, "december": 11, "des": 11, "dec": 11
         };
 
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        // Ensure month label reflects selected month
+        if (monthLabel) {
+             monthLabel.textContent = monthNames[currentBirthdayMonthIndex].toUpperCase();
+        }
+
+        // Filter Members
         const bdayMembers = members.filter(m => {
             if (!m.dob || m.dob === "-") return false;
             // dob format: "7 Juni" or "15 May"
@@ -115,7 +132,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const monthStr = parts[1].toLowerCase();
             const monthIdx = monthMap[monthStr];
 
-            return monthIdx === currentMonthIndex;
+            return monthIdx === currentBirthdayMonthIndex;
+        });
+
+        // Sort by Day (1-31)
+        bdayMembers.sort((a, b) => {
+            const dayA = parseInt(a.dob.trim().split(" ")[0]);
+            const dayB = parseInt(b.dob.trim().split(" ")[0]);
+            return dayA - dayB;
         });
 
         birthdayList.innerHTML = "";
@@ -142,6 +166,23 @@ document.addEventListener("DOMContentLoaded", () => {
             birthdayList.appendChild(card);
         });
     }
+
+    // Expose function for the HTML buttons to call
+    window.setBirthdayMonth = (monthIndex) => {
+        currentBirthdayMonthIndex = monthIndex;
+        renderBirthdays();
+
+        // Update active button style
+        document.querySelectorAll('.month-btn').forEach((btn, idx) => {
+            if(idx === monthIndex) {
+                btn.classList.add('bg-pink-600', 'text-white');
+                btn.classList.remove('bg-gray-800', 'text-gray-400');
+            } else {
+                btn.classList.remove('bg-pink-600', 'text-white');
+                btn.classList.add('bg-gray-800', 'text-gray-400');
+            }
+        });
+    };
 
     // --- STATS CALCULATION ---
     function renderStats() {
@@ -423,6 +464,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- GITHUB SYNC ---
     saveGithubBtn.addEventListener("click", () => {
+        // githubModal.classList.remove("hidden"); // We don't need the modal for token anymore, just confirmation
+        // Reuse the logic but call secure endpoint directly
+
+        // Show simplified modal or just confirm
+        // Let's use the modal but hide the token input in HTML, or just use a confirm dialog
+        // For better UX, let's reuse the modal but change content dynamically or update HTML.
+        // I will update HTML to hide token input.
+
         githubModal.classList.remove("hidden");
         setTimeout(() => githubModal.classList.add("active"), 10);
     });
@@ -433,11 +482,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     confirmGithubBtn.addEventListener("click", async () => {
-        const token = githubTokenInput.value;
-        if (!token) {
-            alert("Please enter a GitHub Token");
-            return;
-        }
+        // No token needed from input
 
         const confirmBtn = confirmGithubBtn;
         const originalText = confirmBtn.innerHTML;
@@ -445,50 +490,25 @@ document.addEventListener("DOMContentLoaded", () => {
         confirmBtn.disabled = true;
 
         try {
-            // 1. Reconstruct js/members.js content
-            // We need to match the original formatting as close as possible or just dump the json
-            // User requested automation. We can generate a string that looks like the file.
+            // 1. Prepare Content
             const fileContent = `const members = ${JSON.stringify(members, null, 6)};`;
 
-            // 2. Get current SHA of the file (required for update)
-            // Assuming repo details: Ramsky1881/memberxfive2025
-            const owner = "Ramsky1881";
-            const repo = "memberxfive2025";
-            const path = "js/members.js";
-
-            // Get SHA
-            const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-                headers: {
-                    "Authorization": `token ${token}`,
-                    "Accept": "application/vnd.github.v3+json"
-                }
-            });
-
-            if (!getRes.ok) throw new Error("Failed to fetch file info. Check token/permissions.");
-            const getData = await getRes.json();
-            const sha = getData.sha;
-
-            // 3. PUT update
-            // Content must be base64 encoded
-            const contentEncoded = btoa(unescape(encodeURIComponent(fileContent)));
-
-            const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
-                method: "PUT",
-                headers: {
-                    "Authorization": `token ${token}`,
-                    "Accept": "application/vnd.github.v3+json",
-                    "Content-Type": "application/json"
-                },
+            // 2. Call Secure Backend
+            const res = await fetch('/.netlify/functions/save-github', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: "Update members via Admin Dashboard",
-                    content: contentEncoded,
-                    sha: sha
+                    content: fileContent,
+                    token: sessionToken
                 })
             });
 
-            if (!putRes.ok) throw new Error("Failed to update file.");
+            if (!res.ok) {
+                const errData = await res.json();
+                throw new Error(errData.body || "Server Error");
+            }
 
-            alert("Success! Data updated on GitHub. It may take a few minutes for the site to reflect changes.");
+            alert("Success! Data updated on GitHub securely.");
             githubModal.classList.remove("active");
             setTimeout(() => githubModal.classList.add("hidden"), 300);
 

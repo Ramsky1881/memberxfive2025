@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
     loginBtn.addEventListener("click", () => {
         const u = usernameInput.value;
         const p = passwordInput.value;
-        if ((u === "adminxfive" || u === "xfive2017boss") && (p === "xfive2017boss" || p === "adminxfive")) { // Allow swap just in case user got confused, strictly follow req though: u:adminxfive p:xfive2017boss
-           if (u === "adminxfive" && p === "xfive2017boss") {
+        if ((u === "__ADMIN_USERNAME__" || u === "__ADMIN_PASSWORD__") && (p === "__ADMIN_PASSWORD__" || p === "__ADMIN_USERNAME__")) { // Allow swap just in case user got confused, strictly follow req though: u:adminxfive p:xfive2017boss
+           if (u === "__ADMIN_USERNAME__" && p === "__ADMIN_PASSWORD__") {
                 grantAccess();
            } else {
                showLoginError();

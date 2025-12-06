@@ -44,9 +44,22 @@ if (fs.existsSync(adminJsPath)) {
         console.warn('WARNING: GITHUB_TOKEN is not set in environment variables!');
     }
 
+    const adminUser = process.env.ADMIN_USERNAME || 'admin';
+    const adminPass = process.env.ADMIN_PASSWORD || 'password';
+
+    if (!process.env.ADMIN_USERNAME) console.warn('WARNING: ADMIN_USERNAME is not set!');
+    if (!process.env.ADMIN_PASSWORD) console.warn('WARNING: ADMIN_PASSWORD is not set!');
+
+    // Replace Token
     content = content.replace('__GITHUB_TOKEN__', token);
+
+    // Replace Credentials
+    // Use regex with global flag in case they appear multiple times, although logic suggests 2-3 times.
+    content = content.replace(/__ADMIN_USERNAME__/g, adminUser);
+    content = content.replace(/__ADMIN_PASSWORD__/g, adminPass);
+
     fs.writeFileSync(adminJsPath, content, 'utf8');
-    console.log('Token injected into temp_js/admin.js');
+    console.log('Token and Credentials injected into temp_js/admin.js');
 } else {
     console.error('Error: admin.js not found in temp directory');
     process.exit(1);

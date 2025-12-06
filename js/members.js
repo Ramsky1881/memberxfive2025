@@ -217,15 +217,15 @@ const members = [
       },
       {
             "name": "Wulan",
-            "title": "Member Community",
-            "avatar": "https://www.studiointermedia.com/images/2025/09/24/Wulan.jpeg",
-            "bgImage": "https://www.studiointermedia.com/images/2025/11/20/Wulan.jpeg",
             "nickname": "catuX5",
-            "code": "WUL7E",
+            "title": "Member Community",
             "domisili": "Pontianak",
             "dob": "26 Juni",
             "gender": "female",
-            "category": "member"
+            "category": "member",
+            "code": "WUL7E",
+            "avatar": "https://www.studiointermedia.com/images/2025/11/20/Wulan.jpeg",
+            "bgImage": "https://www.studiointermedia.com/images/2025/11/20/Wulan.jpeg"
       },
       {
             "name": "Flo",
